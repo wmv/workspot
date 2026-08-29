@@ -125,7 +125,41 @@ header.top {
 
 .top-controls {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.auth-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--bone);
+  font: 500 13px/1 var(--ui);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.auth-btn svg { width: 15px; height: 15px; }
+.auth-btn.signed { padding: 0 5px; }
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  object-fit: cover;
+}
+
+.avatar.fallback {
+  background: var(--laterite);
+  color: #1a211c;
+  font: 700 14px/1 var(--ui);
 }
 
 .lang {

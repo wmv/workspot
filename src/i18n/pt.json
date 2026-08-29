@@ -128,6 +128,8 @@
   "suggestThanks": "Recebido — vamos rever e publicar em breve.",
   "suggestFail": "Não saiu. Toca para tentar de novo.",
   "suggestLimit": "Já enviaste muitas sugestões hoje. Tenta amanhã.",
+  "signIn": "Entrar",
+  "signOut": "Sair",
   "theme": "Tema",
   "theme.auto": "Tema automático",
   "theme.light": "Tema claro",
