@@ -43,6 +43,22 @@ npm run dev          # Vite on port 5173, proxies /api to the API
 
 Open http://localhost:5173. `npm run build` typechecks and builds the client.
 
+## Deployment
+
+Production is a single Cloudflare Worker serving both the PWA (static assets)
+and the Hono API, with Neon Postgres + PostGIS reached through Hyperdrive.
+Contributors never need Cloudflare or Neon access:
+
+- **Every PR** runs CI (typecheck + build) — no secrets required, works from forks.
+- **PRs from branches on this repo** also get a preview URL per push
+  (`wrangler versions upload`), commented on the PR.
+- **Merges to `main`** deploy to production via `wrangler deploy`, authenticated
+  with a maintainer-owned `CLOUDFLARE_API_TOKEN` repo secret. Fork PRs can't
+  read secrets, so deploys are maintainer-only by construction.
+
+Maintainers can also deploy from a machine: `npm run deploy` (requires
+`CLOUDFLARE_API_TOKEN` in the environment or `wrangler login`).
+
 ## The one-liner
 
 > An app that helps people find genuinely work-friendly venues and coordinate

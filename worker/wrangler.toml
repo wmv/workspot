@@ -2,6 +2,14 @@ name = "workspot"
 main = "src/index.ts"
 compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
+preview_urls = true
+
+# Serve the built PWA from the same Worker. /api/* always hits the Hono app;
+# everything else is a static asset with SPA fallback for client routing.
+[assets]
+directory = "../dist"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*"]
 
 # Replace `id` with a real Hyperdrive config once Neon exists.
 # Local `wrangler dev` uses localConnectionString.

@@ -9,7 +9,8 @@
     "db:migrate": "tsx --env-file=.env tools/migrate.ts",
     "db:seed": "tsx --env-file=.env tools/seed.ts",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --host"
+    "preview": "vite preview --host",
+    "deploy": "npm run build && wrangler deploy -c worker/wrangler.toml"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.1",
@@ -28,6 +29,7 @@
     "@vitejs/plugin-react": "^5.0.2",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2",
-    "vite": "^7.1.5"
+    "vite": "^7.1.5",
+    "wrangler": "^4.127.1"
   }
 }
