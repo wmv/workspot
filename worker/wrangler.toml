@@ -1,4 +1,5 @@
 name = "workspot"
+account_id = "146ab5a2a9e84617b2985cadb0e47be9"
 main = "src/index.ts"
 compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
