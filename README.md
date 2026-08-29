@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/favicon.svg" width="88" alt="WorkSpot logo" />
+</p>
+
 # WorkSpot (working codename)
 
 Created at the **[Cursor hackathon in Luanda](https://cursor.com)** — building in the open from day one.
@@ -20,12 +24,20 @@ and group coordination.
 ## Status
 
 **Live: [workspot.wmv.workers.dev](https://workspot.wmv.workers.dev)** —
-Explore (map + ranked list), venue detail, and 10-second pulses run end to
-end in production, in `pt` and `en`.
+functional, healthy, and growing. Explore (map + ranked list), venue detail,
+10-second pulses, suggest-a-spot with an editorial review queue, GitHub
+sign-in, and light/dark themes all run end to end in production, in `pt` and
+`en`. The seed is small on purpose — a handful of real, verified places in
+Luanda — and grows through suggestions and pulses, not scraping.
 
 **Stack:** React + Vite PWA, Hono API, Drizzle, Postgres + PostGIS.
 Production runs on Cloudflare Workers with Neon Postgres via Hyperdrive;
 local development needs no cloud account at all (see below).
+
+Where help is most wanted right now:
+[open issues](https://github.com/wmv/workspot/issues) — including
+[good first issues](https://github.com/wmv/workspot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+that need no coding at all (verifying venue hours on the ground).
 
 ## Getting started (no cloud account needed)
 
@@ -63,6 +75,26 @@ project in a git-ignored `.neon` file and pulls the branch's connection
 strings into `.env`. Schema changes run against the direct (unpooled) URL
 via `npm run db:migrate`.
 
+## How new places get on the map
+
+Anyone can propose a venue from the app ("Sugerir um sítio": name, category,
+pin on the map, optional note). Suggestions land in a `venue_suggestions`
+review queue — nothing appears on the map unreviewed. A maintainer approves or
+rejects through the admin API (Bearer `ADMIN_TOKEN`, a Worker secret):
+
+```bash
+curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+  https://workspot.wmv.workers.dev/api/admin/suggestions          # pending queue
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  https://workspot.wmv.workers.dev/api/admin/suggestions/<id>/approve
+curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+  https://workspot.wmv.workers.dev/api/admin/suggestions/<id>/reject
+```
+
+Approval creates the venue with every amenity `unknown` — facts get filled in
+by people on the ground via pulses, never invented. An in-app review UI is
+[#1](https://github.com/wmv/workspot/issues/1).
+
 ## The one-liner
 
 > An app that helps people find genuinely work-friendly venues and coordinate
@@ -84,8 +116,9 @@ via `npm run db:migrate`.
 ## Contributing
 
 Contributions are welcome — the project is young and early collaborators
-shape it most. Open an issue or pull request to get started. Three ground
-rules from the start: every user-facing string lands in both `pt` and `en`
+shape it most. Grab an [open issue](https://github.com/wmv/workspot/issues)
+(the `good first issue` label marks gentle entry points, including non-coding
+ones) or open a new one. Three ground rules from the start: every user-facing string lands in both `pt` and `en`
 catalogs in the same PR; no dummy data — every venue in the seed is a real
 place someone can walk into, and unverified facts stay `unknown` rather
 than invented; and the local Docker setup above is the supported dev path
