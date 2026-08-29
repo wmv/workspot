@@ -84,8 +84,10 @@ via `npm run db:migrate`.
 ## Contributing
 
 Contributions are welcome — the project is young and early collaborators
-shape it most. Open an issue or pull request to get started. Two ground
+shape it most. Open an issue or pull request to get started. Three ground
 rules from the start: every user-facing string lands in both `pt` and `en`
-catalogs in the same PR, and the local Docker setup above is the supported
-dev path (no cloud accounts needed). Agent skills for working with Neon
-live in `.agents/skills/`.
+catalogs in the same PR; no dummy data — every venue in the seed is a real
+place someone can walk into, and unverified facts stay `unknown` rather
+than invented; and the local Docker setup above is the supported dev path
+(no cloud accounts needed). Agent skills for working with Neon live in
+`.agents/skills/`.
