@@ -19,12 +19,29 @@ and group coordination.
 
 ## Status
 
-**Phase: specification.** No product code yet. Next step is a Slice 1 spike
-(Explore + seeded venues + `pt`/`en`).
+**Phase: Slice 1 spike, working.** Explore (map + ranked list), venue detail,
+and 10-second pulses run end to end against a local PostGIS database. `pt` and
+`en` ship together — both catalogs are first-class.
 
-**Stack (proposed):** mobile-first PWA on Cloudflare Workers, Neon Postgres
-+ PostGIS via Hyperdrive, R2 / KV / Turnstile. Portuguese is a first-class
-language.
+**Stack:** React + Vite PWA, Hono API, Drizzle, Postgres + PostGIS.
+Production target is Cloudflare Workers + Neon via Hyperdrive; local
+development needs no cloud account at all (see below).
+
+## Getting started (no cloud account needed)
+
+Prerequisites: Node 20+, Docker.
+
+```bash
+npm install
+cp .env.example .env
+npm run db:up        # PostGIS in Docker on port 5434
+npm run db:migrate
+npm run db:seed      # seed venues
+npm run api          # Hono API on port 8840
+npm run dev          # Vite on port 5173, proxies /api to the API
+```
+
+Open http://localhost:5173. `npm run build` typechecks and builds the client.
 
 ## The one-liner
 

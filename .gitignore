@@ -1,2 +1,10 @@
 # Working drafts — not part of the public hackathon surface yet
 docs/
+
+node_modules/
+dist/
+*.local
+.DS_Store
+.env
+.wrangler
+worker/.wrangler

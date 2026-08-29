@@ -1,0 +1,65 @@
+import pg from "pg";
+
+const url = process.env.DATABASE_URL;
+if (!url) {
+  console.error("DATABASE_URL is required");
+  process.exit(1);
+}
+
+const sql = `
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+CREATE TABLE IF NOT EXISTS venues (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  lat DOUBLE PRECISION NOT NULL,
+  lng DOUBLE PRECISION NOT NULL,
+  geom geography(Point, 4326) NOT NULL,
+  hours JSONB NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS amenities (
+  venue_id TEXT PRIMARY KEY REFERENCES venues(id) ON DELETE CASCADE,
+  plugs TEXT NOT NULL,
+  wifi TEXT NOT NULL,
+  parking TEXT NOT NULL,
+  groups TEXT NOT NULL,
+  calls TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tips (
+  id SERIAL PRIMARY KEY,
+  venue_id TEXT NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
+  body TEXT NOT NULL,
+  locale TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pulses (
+  id UUID PRIMARY KEY,
+  venue_id TEXT NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
+  at TIMESTAMPTZ NOT NULL,
+  confidence TEXT NOT NULL,
+  note TEXT,
+  lat DOUBLE PRECISION,
+  lng DOUBLE PRECISION
+);
+
+CREATE TABLE IF NOT EXISTS signals (
+  id UUID PRIMARY KEY,
+  pulse_id UUID NOT NULL REFERENCES pulses(id) ON DELETE CASCADE,
+  venue_id TEXT NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
+  attribute TEXT NOT NULL,
+  value TEXT NOT NULL,
+  at TIMESTAMPTZ NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS venues_geom_gix ON venues USING GIST (geom);
+CREATE INDEX IF NOT EXISTS signals_venue_at ON signals (venue_id, at DESC);
+`;
+
+const client = new pg.Client({ connectionString: url });
+await client.connect();
+await client.query(sql);
+await client.end();
+console.log("migrated");

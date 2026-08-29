@@ -1,0 +1,11 @@
+name = "workspot"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Replace `id` with a real Hyperdrive config once Neon exists.
+# Local `wrangler dev` uses localConnectionString.
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "00000000-0000-0000-0000-000000000000"
+localConnectionString = "postgres://workspot:workspot@127.0.0.1:5434/workspot"

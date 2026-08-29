@@ -1,0 +1,217 @@
+[
+  {
+    "id": "cafe-central",
+    "name": "Café Central",
+    "category": "cafe",
+    "lat": -8.8139,
+    "lng": 13.2342,
+    "hours": [
+      { "days": [1, 2, 3, 4, 5], "open": "07:00", "close": "20:00" },
+      { "days": [6], "open": "08:00", "close": "18:00" }
+    ],
+    "facts": { "plugs": "yes", "wifi": "ok", "parking": "limited", "groups": "tolerated", "calls": "headphones" },
+    "pulses": [
+      { "hoursAgo": 2, "plugs": "yes", "noise": "quiet", "crowd": "open", "calls": "maybe", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Tomadas por baixo do banco à esquerda.", "locale": "pt" }]
+  },
+  {
+    "id": "biblioteca-municipal",
+    "name": "Biblioteca Municipal",
+    "category": "library",
+    "lat": -8.8168,
+    "lng": 13.2311,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "09:00", "close": "17:00" }],
+    "facts": { "plugs": "limited", "wifi": "fast", "parking": "none", "groups": "welcome", "calls": "bad" },
+    "pulses": [
+      { "hoursAgo": 48, "plugs": "hard", "noise": "quiet", "crowd": "busy", "calls": "no", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Sala de leitura no 1.º andar é a mais sossegada.", "locale": "pt" }]
+  },
+  {
+    "id": "mesa-tomada",
+    "name": "Mesa & Tomada",
+    "category": "cowork",
+    "lat": -8.8194,
+    "lng": 13.2366,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "08:00", "close": "18:00" }],
+    "facts": { "plugs": "yes", "wifi": "fast", "parking": "easy", "groups": "welcome", "calls": "good" },
+    "pulses": [
+      { "hoursAgo": 6, "plugs": "yes", "noise": "medium", "crowd": "busy", "calls": "yes", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Booths at the back are fine for calls.", "locale": "en" }]
+  },
+  {
+    "id": "cafe-marginal",
+    "name": "Café da Marginal",
+    "category": "cafe",
+    "lat": -8.8112,
+    "lng": 13.2389,
+    "hours": [
+      { "days": [0, 1, 2, 3, 4, 5, 6], "open": "07:30", "close": "22:00" }
+    ],
+    "facts": { "plugs": "limited", "wifi": "ok", "parking": "easy", "groups": "welcome", "calls": "headphones" },
+    "pulses": [
+      { "hoursAgo": 1, "plugs": "hard", "noise": "loud", "crowd": "packed", "calls": "no", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Lindo, mas barulhento depois das 11h.", "locale": "pt" }]
+  },
+  {
+    "id": "arquivo",
+    "name": "Sala de Leitura do Arquivo",
+    "category": "library",
+    "lat": -8.8155,
+    "lng": 13.2298,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "08:30", "close": "15:30" }],
+    "facts": { "plugs": "no", "wifi": "unreliable", "parking": "limited", "groups": "solo", "calls": "bad" },
+    "pulses": [],
+    "tips": [{ "text": "Leva bateria. Quase não há tomadas.", "locale": "pt" }]
+  },
+  {
+    "id": "baia-cowork",
+    "name": "Baía Cowork",
+    "category": "cowork",
+    "lat": -8.8104,
+    "lng": 13.2324,
+    "hours": [
+      { "days": [1, 2, 3, 4, 5], "open": "08:00", "close": "21:00" },
+      { "days": [6], "open": "09:00", "close": "14:00" }
+    ],
+    "facts": { "plugs": "yes", "wifi": "fast", "parking": "limited", "groups": "welcome", "calls": "good" },
+    "pulses": [
+      { "hoursAgo": 5, "plugs": "yes", "noise": "quiet", "crowd": "open", "calls": "yes", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Pede a sala pequena se fores em 4.", "locale": "pt" }]
+  },
+  {
+    "id": "espresso-mutamba",
+    "name": "Espresso Mutamba",
+    "category": "cafe",
+    "lat": -8.8179,
+    "lng": 13.2337,
+    "hours": [{ "days": [1, 2, 3, 4, 5, 6], "open": "06:30", "close": "19:00" }],
+    "facts": { "plugs": "yes", "wifi": "ok", "parking": "none", "groups": "tolerated", "calls": "headphones" },
+    "pulses": [
+      { "hoursAgo": 11, "plugs": "yes", "noise": "medium", "crowd": "busy", "calls": "maybe", "group4": "no" }
+    ],
+    "tips": [{ "text": "Uma mesa comprida ao fundo aguenta 2 portáteis.", "locale": "pt" }]
+  },
+  {
+    "id": "hotel-lobby",
+    "name": "Lobby Presidente",
+    "category": "other",
+    "lat": -8.8126,
+    "lng": 13.2306,
+    "hours": [{ "days": [0, 1, 2, 3, 4, 5, 6], "open": "00:00", "close": "23:59" }],
+    "facts": { "plugs": "yes", "wifi": "fast", "parking": "easy", "groups": "tolerated", "calls": "good" },
+    "pulses": [
+      { "hoursAgo": 30, "plugs": "yes", "noise": "medium", "crowd": "open", "calls": "yes", "group4": "maybe" }
+    ],
+    "tips": [{ "text": "Wi‑Fi de hóspede; pede o código na recepção.", "locale": "pt" }]
+  },
+  {
+    "id": "cantinho-kinaxixi",
+    "name": "Cantinho do Kinaxixi",
+    "category": "cafe",
+    "lat": -8.8188,
+    "lng": 13.2289,
+    "hours": [
+      { "days": [1, 2, 3, 4, 5], "open": "08:00", "close": "17:00" },
+      { "days": [6], "open": "09:00", "close": "13:00" }
+    ],
+    "facts": { "plugs": "limited", "wifi": "ok", "parking": "limited", "groups": "welcome", "calls": "headphones" },
+    "pulses": [
+      { "hoursAgo": 4, "plugs": "hard", "noise": "quiet", "crowd": "open", "calls": "maybe", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Sombra boa. Uma tomada junto à janela.", "locale": "pt" }]
+  },
+  {
+    "id": "estudio-ilha",
+    "name": "Estúdio Ilha",
+    "category": "cowork",
+    "lat": -8.8081,
+    "lng": 13.2412,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "09:00", "close": "19:00" }],
+    "facts": { "plugs": "yes", "wifi": "fast", "parking": "easy", "groups": "welcome", "calls": "good" },
+    "pulses": [
+      { "hoursAgo": 72, "plugs": "yes", "noise": "quiet", "crowd": "open", "calls": "yes", "group4": "yes" }
+    ],
+    "tips": [{ "text": "A bit of a walk from Ingombota — worth it if you need calls.", "locale": "en" }]
+  },
+  {
+    "id": "padaria-baixa",
+    "name": "Padaria da Baixa",
+    "category": "cafe",
+    "lat": -8.8149,
+    "lng": 13.2361,
+    "hours": [{ "days": [1, 2, 3, 4, 5, 6], "open": "06:00", "close": "15:00" }],
+    "facts": { "plugs": "no", "wifi": "no", "parking": "none", "groups": "tolerated", "calls": "bad" },
+    "pulses": [
+      { "hoursAgo": 3, "plugs": "no", "noise": "loud", "crowd": "packed", "calls": "no", "group4": "maybe" }
+    ],
+    "tips": [{ "text": "Pão excelente. Péssimo para trabalhar.", "locale": "pt" }]
+  },
+  {
+    "id": "campus-sala",
+    "name": "Sala Aberta do Campus",
+    "category": "library",
+    "lat": -8.8212,
+    "lng": 13.2349,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "08:00", "close": "20:00" }],
+    "facts": { "plugs": "yes", "wifi": "fast", "parking": "limited", "groups": "welcome", "calls": "bad" },
+    "pulses": [
+      { "hoursAgo": 8, "plugs": "yes", "noise": "quiet", "crowd": "busy", "calls": "no", "group4": "yes" }
+    ],
+    "tips": [{ "text": "Silêncio obrigatório. Grupos na sala B.", "locale": "pt" }]
+  },
+  {
+    "id": "terraza-mutamba",
+    "name": "Terraço Mutamba",
+    "category": "cafe",
+    "lat": -8.8161,
+    "lng": 13.2374,
+    "hours": [{ "days": [1, 2, 3, 4, 5, 6], "open": "10:00", "close": "23:00" }],
+    "facts": { "plugs": "limited", "wifi": "unreliable", "parking": "limited", "groups": "welcome", "calls": "headphones" },
+    "pulses": [
+      { "hoursAgo": 9, "plugs": "hard", "noise": "loud", "crowd": "busy", "calls": "no", "group4": "yes" }
+    ],
+    "tips": []
+  },
+  {
+    "id": "oficina-digital",
+    "name": "Oficina Digital",
+    "category": "cowork",
+    "lat": -8.8131,
+    "lng": 13.2277,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "08:30", "close": "18:30" }],
+    "facts": { "plugs": "yes", "wifi": "ok", "parking": "none", "groups": "tolerated", "calls": "good" },
+    "pulses": [
+      { "hoursAgo": 14, "plugs": "yes", "noise": "quiet", "crowd": "open", "calls": "yes", "group4": "maybe" }
+    ],
+    "tips": [{ "text": "Dois sítios de chamada atrás da estante.", "locale": "pt" }]
+  },
+  {
+    "id": "jardim-sombra",
+    "name": "Jardim com Sombra",
+    "category": "other",
+    "lat": -8.8122,
+    "lng": 13.2333,
+    "hours": [{ "days": [0, 1, 2, 3, 4, 5, 6], "open": "06:00", "close": "18:00" }],
+    "facts": { "plugs": "no", "wifi": "no", "parking": "none", "groups": "welcome", "calls": "headphones" },
+    "pulses": [],
+    "tips": [{ "text": "Sombra e sossego. Sem tomada, sem Wi‑Fi.", "locale": "pt" }]
+  },
+  {
+    "id": "mesa-alta",
+    "name": "Mesa Alta",
+    "category": "cafe",
+    "lat": -8.8158,
+    "lng": 13.232,
+    "hours": [{ "days": [1, 2, 3, 4, 5], "open": "07:00", "close": "21:00" }],
+    "facts": { "plugs": "yes", "wifi": "ok", "parking": "limited", "groups": "solo", "calls": "headphones" },
+    "pulses": [
+      { "hoursAgo": 0.5, "plugs": "yes", "noise": "quiet", "crowd": "open", "calls": "maybe", "group4": "no" }
+    ],
+    "tips": [{ "text": "Balcão alto, uma pessoa por lugar.", "locale": "pt" }]
+  }
+]
