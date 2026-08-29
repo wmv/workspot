@@ -123,6 +123,13 @@ header.top {
   flex: none;
 }
 
+/* Narrow phones: the mark alone stands for the brand so the header controls
+   (theme, language, account) keep their touch targets without clipping. */
+@media (max-width: 429px) {
+  .wordmark .mark { width: 24px; height: 24px; }
+  .wordmark-text { display: none; }
+}
+
 .top-controls {
   display: flex;
   align-items: center;

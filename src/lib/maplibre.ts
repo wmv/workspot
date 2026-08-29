@@ -11,5 +11,7 @@ import type { ResolvedTheme } from "./theme";
 
 export const MAP_STYLES: Record<ResolvedTheme, string> = {
   light: "https://tiles.openfreemap.org/styles/positron",
-  dark: "https://tiles.openfreemap.org/styles/dark",
+  // Committed fork of OpenFreeMap's dark style, warmed to the app palette.
+  // Regenerate with `node tools/map-style.mjs`.
+  dark: "/map-styles/dark.json",
 };

@@ -28,7 +28,7 @@ export function Shell({
             />
             <circle cx="22" cy="8.5" r="4.5" fill="var(--laterite)" />
           </svg>
-          {t("brand")}
+          <span className="wordmark-text">{t("brand")}</span>
         </Link>
         <div className="top-controls">
           <ThemeToggle />
