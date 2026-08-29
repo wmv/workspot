@@ -132,6 +132,8 @@
   "signIn": "Sign in",
   "signInFail": "Sign-in is unavailable right now. Try again later.",
   "signOut": "Sign out",
+  "prefs": "Preferences",
+  "language": "Language",
   "theme": "Theme",
   "theme.auto": "Automatic theme",
   "theme.light": "Light theme",

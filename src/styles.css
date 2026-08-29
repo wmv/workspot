@@ -125,7 +125,9 @@ header.top {
 
 /* Narrow phones: the mark alone stands for the brand so the header controls
    (theme, language, account) keep their touch targets without clipping. */
-@media (max-width: 429px) {
+/* With the prefs pills collapsed into a dropdown the wordmark fits on most
+   phones; only truly narrow screens drop to the mark alone. */
+@media (max-width: 359px) {
   .wordmark .mark { width: 24px; height: 24px; }
   .wordmark-text { display: none; }
 }
@@ -229,6 +231,31 @@ header.top {
 
 .account-menu [role="menuitem"]:hover { background: var(--shade); }
 .account-menu [role="menuitem"] svg { width: 16px; height: 16px; flex: none; }
+
+/* Theme + language pills sit inline on wide headers and collapse into the
+   preferences dropdown once the phone header runs out of room. */
+.prefs-inline { display: flex; align-items: center; gap: 8px; }
+.prefs-trigger { display: none; }
+
+.prefs-menu { min-width: 232px; }
+
+.prefs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 6px 4px 6px 10px;
+}
+
+.prefs-row > span {
+  font: 500 13px/1 var(--ui);
+  color: var(--dust);
+}
+
+@media (max-width: 599px) {
+  .prefs-inline { display: none; }
+  .prefs-trigger { display: block; }
+}
 
 .lang {
   display: flex;

@@ -132,6 +132,8 @@
   "signIn": "Entrar",
   "signInFail": "Login indisponível de momento. Tenta mais tarde.",
   "signOut": "Sair",
+  "prefs": "Preferências",
+  "language": "Idioma",
   "theme": "Tema",
   "theme.auto": "Tema automático",
   "theme.light": "Tema claro",
