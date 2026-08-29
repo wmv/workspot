@@ -129,6 +129,7 @@
   "suggestFail": "Didn't go through. Tap to retry.",
   "suggestLimit": "You've sent a lot today. Try again tomorrow.",
   "signIn": "Sign in",
+  "signInFail": "Sign-in is unavailable right now. Try again later.",
   "signOut": "Sign out",
   "theme": "Theme",
   "theme.auto": "Automatic theme",

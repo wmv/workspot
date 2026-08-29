@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useI18n } from "../i18n";
 import { authClient, signInWithGitHub } from "../lib/auth";
+import { useVenues } from "../lib/venueStore";
 
 export function AuthButton() {
   const { t } = useI18n();
+  const { setToast } = useVenues();
   const { data: session, isPending } = authClient.useSession();
   const [busy, setBusy] = useState(false);
 
@@ -18,7 +20,10 @@ export function AuthButton() {
         onClick={async () => {
           setBusy(true);
           try {
-            await signInWithGitHub();
+            const res = await signInWithGitHub();
+            if (res.error) setToast(t("signInFail"));
+          } catch {
+            setToast(t("signInFail"));
           } finally {
             setBusy(false);
           }
