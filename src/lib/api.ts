@@ -1,4 +1,4 @@
-import type { LivePulse, Venue } from "./types";
+import type { Category, LivePulse, Locale, Venue } from "./types";
 
 const BASE = import.meta.env.VITE_API_URL ?? "/api";
 
@@ -41,4 +41,20 @@ export async function postPulse(
   });
   const data = await read(res);
   return data.venue as Venue;
+}
+
+export async function postSuggestion(input: {
+  name: string;
+  category: Category;
+  lat: number;
+  lng: number;
+  note?: string;
+  locale: Locale;
+}): Promise<{ id: string }> {
+  const res = await fetch(`${BASE}/suggestions`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  return read(res);
 }

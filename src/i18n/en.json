@@ -115,5 +115,17 @@
   "pulse.q.calls": "Calls?",
   "pulse.q.group4": "Group of 4?",
   "pulseOnSite": "On site",
-  "pulseRemoteTag": "Remote"
+  "pulseRemoteTag": "Remote",
+  "suggestEntry": "Suggest a spot",
+  "suggestTitle": "Suggest a spot",
+  "suggestIntro": "Know a good place to work from? The team reviews before it goes on the map.",
+  "suggestName": "Place name",
+  "suggestNamePh": "E.g. Café Kimbo",
+  "suggestCategory": "Type",
+  "suggestPin": "Drag the map until the pin is on the right spot",
+  "suggestNote": "Note — optional",
+  "suggestSend": "Send suggestion",
+  "suggestThanks": "Received — we'll review and publish soon.",
+  "suggestFail": "Didn't go through. Tap to retry.",
+  "suggestLimit": "You've sent a lot today. Try again tomorrow."
 }

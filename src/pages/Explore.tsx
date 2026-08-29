@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Outlet, useMatch, useNavigate } from "react-router-dom";
+import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import { ExploreMap } from "../components/ExploreMap";
 import { Shell } from "../components/Shell";
 import { VenueCard } from "../components/VenueCard";
@@ -196,6 +196,10 @@ export function Explore() {
                   onHighlight={setHoverId}
                 />
               ))}
+
+            <Link className="suggest-entry" to="/suggest">
+              + {t("suggestEntry")}
+            </Link>
           </main>
 
           <nav className="dock" aria-label="Navegação">

@@ -5,6 +5,7 @@ import { VenueProvider } from "./lib/venueStore";
 import { Explore } from "./pages/Explore";
 import { NotFound } from "./pages/NotFound";
 import { PulseScreen } from "./pages/Pulse";
+import { SuggestPlace } from "./pages/SuggestPlace";
 import { VenueDetail } from "./pages/VenueDetail";
 
 export function App() {
@@ -18,6 +19,7 @@ export function App() {
                 <Route path="pulse" element={<PulseScreen />} />
               </Route>
             </Route>
+            <Route path="/suggest" element={<SuggestPlace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toast />

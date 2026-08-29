@@ -54,8 +54,23 @@ CREATE TABLE IF NOT EXISTS signals (
   at TIMESTAMPTZ NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS venue_suggestions (
+  id UUID PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  lat DOUBLE PRECISION NOT NULL,
+  lng DOUBLE PRECISION NOT NULL,
+  note TEXT,
+  locale TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  ip_hash TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE INDEX IF NOT EXISTS venues_geom_gix ON venues USING GIST (geom);
 CREATE INDEX IF NOT EXISTS signals_venue_at ON signals (venue_id, at DESC);
+CREATE INDEX IF NOT EXISTS suggestions_status ON venue_suggestions (status, created_at DESC);
+CREATE INDEX IF NOT EXISTS suggestions_ip ON venue_suggestions (ip_hash, created_at DESC);
 `;
 
 const client = new pg.Client({ connectionString: url });

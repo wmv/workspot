@@ -115,5 +115,17 @@
   "pulse.q.calls": "Chamadas?",
   "pulse.q.group4": "Grupo de 4?",
   "pulseOnSite": "No sítio",
-  "pulseRemoteTag": "Remoto"
+  "pulseRemoteTag": "Remoto",
+  "suggestEntry": "Sugerir um sítio",
+  "suggestTitle": "Sugere um sítio",
+  "suggestIntro": "Conheces um sítio bom para trabalhar? A equipa revê antes de entrar no mapa.",
+  "suggestName": "Nome do sítio",
+  "suggestNamePh": "Ex.: Café Kimbo",
+  "suggestCategory": "Tipo",
+  "suggestPin": "Arrasta o mapa até o pino ficar no sítio certo",
+  "suggestNote": "Nota — opcional",
+  "suggestSend": "Enviar sugestão",
+  "suggestThanks": "Recebido — vamos rever e publicar em breve.",
+  "suggestFail": "Não saiu. Toca para tentar de novo.",
+  "suggestLimit": "Já enviaste muitas sugestões hoje. Tenta amanhã."
 }

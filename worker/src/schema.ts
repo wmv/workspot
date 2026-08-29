@@ -49,6 +49,19 @@ export const pulses = pgTable("pulses", {
   lng: doublePrecision("lng"),
 });
 
+export const venueSuggestions = pgTable("venue_suggestions", {
+  id: uuid("id").primaryKey(),
+  name: text("name").notNull(),
+  category: text("category").notNull(),
+  lat: doublePrecision("lat").notNull(),
+  lng: doublePrecision("lng").notNull(),
+  note: text("note"),
+  locale: text("locale").notNull(),
+  status: text("status").notNull().default("pending"),
+  ipHash: text("ip_hash"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const signals = pgTable("signals", {
   id: uuid("id").primaryKey(),
   pulseId: uuid("pulse_id")

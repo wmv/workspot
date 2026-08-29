@@ -14,14 +14,25 @@ export function databaseUrl(env?: { HYPERDRIVE?: Hyperdrive }): string {
   return fromEnv;
 }
 
-const pools = new Map<string, pg.Pool>();
+const nodePools = new Map<string, pg.Pool>();
 
-export function getDb(env?: { HYPERDRIVE?: Hyperdrive }): Db {
+// Workers forbid reusing a TCP socket opened during one request from another
+// request, so behind Hyperdrive each request gets a fresh pool the caller must
+// close (Hyperdrive holds the real server-side pool, so this is cheap). The
+// long-lived node dev server keeps a normal cached pool instead.
+export function makeDb(env?: { HYPERDRIVE?: Hyperdrive }): {
+  db: Db;
+  close?: () => Promise<void>;
+} {
   const url = databaseUrl(env);
-  let pool = pools.get(url);
+  if (env?.HYPERDRIVE?.connectionString) {
+    const pool = new pg.Pool({ connectionString: url, max: 2 });
+    return { db: drizzle(pool, { schema }), close: () => pool.end() };
+  }
+  let pool = nodePools.get(url);
   if (!pool) {
     pool = new pg.Pool({ connectionString: url, max: 4 });
-    pools.set(url, pool);
+    nodePools.set(url, pool);
   }
-  return drizzle(pool, { schema });
+  return { db: drizzle(pool, { schema }) };
 }
