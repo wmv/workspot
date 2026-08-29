@@ -39,7 +39,8 @@ export function ExploreMap({
       zoom: 14.2,
       attributionControl: false,
     });
-    map.addControl(new AttributionControl({ compact: true }), "bottom-right");
+    // Top-right keeps the licence pill clear of the bottom venue sheet.
+    map.addControl(new AttributionControl({ compact: true }), "top-right");
     map.on("load", () => map.resize());
     mapRef.current = map;
     return () => {

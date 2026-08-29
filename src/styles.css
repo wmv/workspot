@@ -584,17 +584,23 @@ header.top {
   right: 12px;
   bottom: 12px;
   z-index: 2;
-  max-height: 48%;
-  overflow: auto;
+  max-height: 56%;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Card scrolls if tall; the action row stays pinned and fully visible. */
+.map-sheet .card { overflow-y: auto; min-height: 0; }
+
 .sheet-actions {
+  flex: none;
   display: flex;
   gap: 8px;
   margin-top: 8px;
 }
 
 .sheet-actions .cta { flex: 1; margin-top: 0; }
+.sheet-actions .ghost { flex: none; background: var(--raised); }
 
 .detail-layer {
   display: none;
@@ -767,10 +773,16 @@ header.top {
   .explore-body.is-map .explore-col { flex: none; }
   .explore-body.is-map .dock { display: none; }
 
+  /* Frame the map like a card so the junction with the header chrome reads
+     as intentional instead of two surfaces butting into each other. */
   .explore-body.is-map .detail-pane {
     display: flex;
     flex: 1;
     min-height: 0;
+    margin: 0 12px calc(12px + env(safe-area-inset-bottom, 0px));
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
   }
 
   .explore-body.is-ficha .explore-col { display: none; }
@@ -803,6 +815,8 @@ header.top {
 
   .app.wide header.top {
     grid-column: 1 / -1;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
   }
 
   .explore-body {
