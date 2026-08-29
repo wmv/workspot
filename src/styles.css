@@ -91,6 +91,9 @@ header.top {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: var(--display);
   font-weight: 700;
   font-size: 22px;
@@ -98,6 +101,12 @@ header.top {
   line-height: 1;
   color: inherit;
   text-decoration: none;
+}
+
+.wordmark .mark {
+  width: 21px;
+  height: 21px;
+  flex: none;
 }
 
 .top-controls {
