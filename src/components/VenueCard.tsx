@@ -25,8 +25,8 @@ export function VenueCard({
     >
       <div className="card-top">
         <div className="name">{card.venue.name}</div>
-        <div className={`badge ${card.open ? "" : "shut"}`}>
-          {card.open ? t("open") : t("shut")}
+        <div className={`badge ${card.open === "closed" ? "shut" : card.open === "unknown" ? "unk" : ""}`}>
+          {t(card.open === "open" ? "open" : card.open === "closed" ? "shut" : "openUnknown")}
         </div>
       </div>
       <div className="meta">

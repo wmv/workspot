@@ -17,12 +17,14 @@ export type HourBlock = {
   close: string;
 };
 
+// "unknown" means not yet verified by the team or a pulse — real venues are
+// seeded from OSM with only what the data actually says.
 export type Facts = {
-  plugs: "yes" | "limited" | "no";
-  wifi: "fast" | "ok" | "unreliable" | "no";
-  parking: "easy" | "limited" | "none";
-  groups: "welcome" | "tolerated" | "solo";
-  calls: "good" | "headphones" | "bad";
+  plugs: "yes" | "limited" | "no" | "unknown";
+  wifi: "fast" | "ok" | "unreliable" | "no" | "unknown";
+  parking: "easy" | "limited" | "none" | "unknown";
+  groups: "welcome" | "tolerated" | "solo" | "unknown";
+  calls: "good" | "headphones" | "bad" | "unknown";
 };
 
 export type Pulse = {

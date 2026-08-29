@@ -25,6 +25,14 @@ function toMinutes(hhmm: string): number {
   return h * 60 + m;
 }
 
+export type OpenState = "open" | "closed" | "unknown";
+
+/** Empty hours mean "not collected yet", not "never open". */
+export function openState(hours: HourBlock[], now = new Date()): OpenState {
+  if (hours.length === 0) return "unknown";
+  return isOpenNow(hours, now) ? "open" : "closed";
+}
+
 export function isOpenNow(hours: HourBlock[], now = new Date()): boolean {
   const { weekday, minutes } = partsInLuanda(now);
   return hours.some((block) => {

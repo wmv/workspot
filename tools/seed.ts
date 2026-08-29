@@ -96,5 +96,15 @@ for (const venue of list) {
   }
 }
 
+// The seed file is authoritative: venues removed from it disappear from the
+// database too (cascades take their amenities, tips, pulses, and signals).
+const stale = await client.query(
+  "DELETE FROM venues WHERE NOT (id = ANY($1::text[])) RETURNING id",
+  [list.map((v) => v.id)],
+);
+
 await client.end();
-console.log(`seeded ${list.length} venues`);
+console.log(
+  `seeded ${list.length} venues` +
+    (stale.rowCount ? `, removed ${stale.rowCount} stale` : ""),
+);

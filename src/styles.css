@@ -340,6 +340,7 @@ header.top {
 }
 
 .badge.shut { color: var(--closed); }
+.badge.unk { color: var(--ink-dim, #9a938a); }
 
 .signals {
   display: flex;

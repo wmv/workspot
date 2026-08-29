@@ -1,6 +1,6 @@
 import seed from "../data/venues.json";
 import { formatDistance, haversineMeters, ORIGIN } from "./geo";
-import { isOpenNow } from "./hours";
+import { openState, type OpenState } from "./hours";
 import type { ChipId, Locale, Pulse, Venue } from "./types";
 
 export const venues = seed as Venue[];
@@ -18,7 +18,9 @@ export function matchesChip(venue: Venue, chip: ChipId, now = new Date()): boole
   const pulse = latestPulse(venue);
   switch (chip) {
     case "open":
-      return isOpenNow(venue.hours, now);
+      // Unknown hours stay visible under "open now" — hiding them would
+      // bury every venue we haven't surveyed yet.
+      return openState(venue.hours, now) !== "closed";
     case "plugs":
       if (pulse) return pulse.plugs !== "no";
       return venue.facts.plugs !== "no";
@@ -50,7 +52,7 @@ export function matchesChips(
 
 export type CardModel = {
   venue: Venue;
-  open: boolean;
+  open: OpenState;
   meters: number;
   distance: string;
   recencyKey: "none" | "fresh" | "stale";
@@ -62,7 +64,15 @@ export type CardModel = {
 function signalKeys(venue: Venue, locale: Locale): string[] {
   const pulse = latestPulse(venue);
   const out: string[] = [];
-  const plugs = pulse?.plugs ?? (venue.facts.plugs === "yes" ? "yes" : venue.facts.plugs === "no" ? "no" : "hard");
+  const plugs =
+    pulse?.plugs ??
+    (venue.facts.plugs === "yes"
+      ? "yes"
+      : venue.facts.plugs === "no"
+        ? "no"
+        : venue.facts.plugs === "limited"
+          ? "hard"
+          : undefined);
   if (plugs === "yes") out.push(locale === "pt" ? "Tomadas fáceis" : "Plugs easy");
   else if (plugs === "hard") out.push(locale === "pt" ? "Tomadas difíceis" : "Plugs hard");
   if (pulse?.noise === "quiet") out.push(locale === "pt" ? "Sossegado" : "Quiet");
@@ -82,7 +92,7 @@ export function toCard(
   origin = ORIGIN,
   now = new Date(),
 ): CardModel {
-  const open = isOpenNow(venue.hours, now);
+  const open = openState(venue.hours, now);
   const meters = haversineMeters(origin, venue);
   const pulse = latestPulse(venue);
   const hoursAgo = pulse ? pulse.hoursAgo : null;
@@ -97,7 +107,7 @@ export function toCard(
   } else {
     recencyKey = "fresh";
   }
-  if (!open) state = "is-closed";
+  if (open === "closed") state = "is-closed";
   return {
     venue,
     open,
@@ -121,7 +131,8 @@ export function rankVenues(
     .filter((v) => matchesChips(v, chips, now))
     .map((v) => toCard(v, locale, origin, now))
     .sort((a, b) => {
-      if (a.open !== b.open) return a.open ? -1 : 1;
+      const rank: Record<OpenState, number> = { open: 0, unknown: 1, closed: 2 };
+      if (a.open !== b.open) return rank[a.open] - rank[b.open];
       if (a.meters !== b.meters) return a.meters - b.meters;
       const ah = a.hoursAgo ?? 10_000;
       const bh = b.hoursAgo ?? 10_000;
