@@ -365,5 +365,109 @@
     },
     "pulses": [],
     "tips": []
+  },
+  {
+    "id": "cafe-mata-bicho",
+    "name": "Café Mata Bicho",
+    "category": "cafe",
+    "lat": -8.80858,
+    "lng": 13.22437,
+    "hours": [],
+    "facts": {
+      "plugs": "unknown",
+      "wifi": "unknown",
+      "parking": "unknown",
+      "groups": "unknown",
+      "calls": "unknown"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "No piso 0 do Shopping Fortaleza.",
+        "locale": "pt"
+      },
+      {
+        "text": "Ground floor (piso 0) of Shopping Fortaleza.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "kubico",
+    "name": "Restaurante Kubico",
+    "category": "other",
+    "lat": -8.8158,
+    "lng": 13.2395,
+    "hours": [],
+    "facts": {
+      "plugs": "unknown",
+      "wifi": "unknown",
+      "parking": "unknown",
+      "groups": "unknown",
+      "calls": "unknown"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "No Kinaxixi.",
+        "locale": "pt"
+      },
+      {
+        "text": "In Kinaxixi.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "cozy-cafe",
+    "name": "Cozy Café",
+    "category": "cafe",
+    "lat": -8.81617,
+    "lng": 13.23491,
+    "hours": [],
+    "facts": {
+      "plugs": "unknown",
+      "wifi": "unknown",
+      "parking": "unknown",
+      "groups": "unknown",
+      "calls": "unknown"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "Ed. Dalia Plaza, Av. de Portugal n.º 35. Seg–Sex 06:30–16:30; fins de semana abre às 08:00 (fecho por confirmar).",
+        "locale": "pt"
+      },
+      {
+        "text": "Dalia Plaza building, Av. de Portugal 35. Mon–Fri 06:30–16:30; weekends from 08:00 (closing time unconfirmed).",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "vida-e-caffe-sonangol",
+    "name": "Vida e Caffè — Sonangol",
+    "category": "cafe",
+    "lat": -8.81428,
+    "lng": 13.23221,
+    "hours": [],
+    "facts": {
+      "plugs": "unknown",
+      "wifi": "unknown",
+      "parking": "unknown",
+      "groups": "unknown",
+      "calls": "unknown"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "R. Amílcar Cabral 110, Ed. Sonangol Distribuidora (Mutamba). Anunciado 08h–21h todos os dias, mas há relatos de fecho ao fim de semana — confirma antes de ir.",
+        "locale": "pt"
+      },
+      {
+        "text": "R. Amílcar Cabral 110, Sonangol Distribuidora building (Mutamba). Advertised 08:00–21:00 daily, but reportedly sometimes closed on weekends — check before you go.",
+        "locale": "en"
+      }
+    ]
   }
 ]
