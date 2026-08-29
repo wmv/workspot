@@ -73,8 +73,8 @@ function signalKeys(venue: Venue, locale: Locale): string[] {
         : venue.facts.plugs === "limited"
           ? "hard"
           : undefined);
-  if (plugs === "yes") out.push(locale === "pt" ? "Tomadas fáceis" : "Plugs easy");
-  else if (plugs === "hard") out.push(locale === "pt" ? "Tomadas difíceis" : "Plugs hard");
+  if (plugs === "yes") out.push(locale === "pt" ? "Tomadas a funcionar" : "Plugs working");
+  else if (plugs === "hard") out.push(locale === "pt" ? "Tomadas instáveis" : "Plugs flaky");
   if (pulse?.noise === "quiet") out.push(locale === "pt" ? "Sossegado" : "Quiet");
   else if (venue.facts.wifi === "fast") out.push(locale === "pt" ? "Wi‑Fi estável" : "Stable Wi‑Fi");
   if (out.length < 2 && (pulse?.group4 === "yes" || venue.facts.groups === "welcome")) {
