@@ -12,9 +12,9 @@ directory = "../dist"
 not_found_handling = "single-page-application"
 run_worker_first = ["/api/*"]
 
-# Replace `id` with a real Hyperdrive config once Neon exists.
-# Local `wrangler dev` uses localConnectionString.
+# Hyperdrive config "workspot-neon" pools connections to Neon Postgres.
+# Local `wrangler dev` uses localConnectionString instead.
 [[hyperdrive]]
 binding = "HYPERDRIVE"
-id = "00000000-0000-0000-0000-000000000000"
+id = "ca8caedde5fa44829caaa4e0aeaf418b"
 localConnectionString = "postgres://workspot:workspot@127.0.0.1:5434/workspot"
