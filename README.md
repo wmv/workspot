@@ -29,7 +29,7 @@ development needs no cloud account at all (see below).
 
 ## Getting started (no cloud account needed)
 
-Prerequisites: Node 20+, Docker.
+Prerequisites: Node 22+, Docker.
 
 ```bash
 npm install
