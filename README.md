@@ -21,8 +21,7 @@ and group coordination.
 
 **Live: [workspot.wmv.workers.dev](https://workspot.wmv.workers.dev)** —
 Explore (map + ranked list), venue detail, and 10-second pulses run end to
-end in production. `pt` and `en` ship together — both catalogs are
-first-class.
+end in production, in `pt` and `en`.
 
 **Stack:** React + Vite PWA, Hono API, Drizzle, Postgres + PostGIS.
 Production runs on Cloudflare Workers with Neon Postgres via Hyperdrive;
@@ -80,8 +79,7 @@ via `npm run db:migrate`.
    expansion story.** Build the habit first.
 4. **Launch in one dense neighborhood, seeded by hand.** Cold start is the
    biggest risk; density beats coverage.
-5. **Portuguese is first-class.** `pt` and `en` ship together; the launch
-   neighborhood defaults to `pt`.
+5. **`pt` and `en` ship together.** The launch neighborhood defaults to `pt`.
 
 ## Contributing
 
