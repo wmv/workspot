@@ -16,7 +16,7 @@
     "@hono/node-server": "^1.19.1",
     "@neon/config": "^1.1.0",
     "@neon/env": "^1.1.6",
-    "better-auth": "^1.7.2",
+    "@neondatabase/auth": "^0.5.0-beta",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.9.7",
     "maplibre-gl": "^6.6.0",
