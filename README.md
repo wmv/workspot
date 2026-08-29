@@ -14,20 +14,17 @@ and group coordination.
 
 > Codename note: "WorkSpot" is a placeholder. Final name should not trap us in
 > coffee shops — prefer roots like *plug / spot / session / work / meet*.
-> Candidates parked in `docs/SPEC.md` § Brand.
+
+**Hackathon brief (PT first, then EN):** [`HACKATHON.md`](HACKATHON.md)
 
 ## Status
 
-**Phase: specification.** No code yet. We are iterating on the spec and roadmap
-before writing a line of product code.
+**Phase: specification.** No product code yet. Next step is a Slice 1 spike
+(Explore + seeded venues + `pt`/`en`).
 
-## Documents
-
-| Doc | Contents |
-|-----|----------|
-| [`docs/SPEC.md`](docs/SPEC.md) | Full product specification: problem, positioning, personas, product pillars, UX principles, data model, ranking logic, trust/anti-spam, business model, risks, metrics |
-| [`docs/MVP.md`](docs/MVP.md) | MVP scope: hypothesis, user stories ranked by priority, screen-by-screen breakdown, explicit non-goals |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Cold-start plan and V1 → V2 → V3 roadmap with success criteria per phase |
+**Stack (proposed):** mobile-first PWA on Cloudflare Workers, Neon Postgres
++ PostGIS via Hyperdrive, R2 / KV / Turnstile. Portuguese is a first-class
+language.
 
 ## The one-liner
 
@@ -45,6 +42,8 @@ before writing a line of product code.
    expansion story.** Build the habit first.
 4. **Launch in one dense neighborhood, seeded by hand.** Cold start is the
    biggest risk; density beats coverage.
+5. **Portuguese is first-class.** `pt` and `en` ship together; the launch
+   neighborhood defaults to `pt`.
 
 ## Contributing
 
