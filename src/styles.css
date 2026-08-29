@@ -151,8 +151,15 @@ header.top {
   touch-action: manipulation;
 }
 
-.auth-btn svg { width: 15px; height: 15px; }
+.auth-btn svg { width: 17px; height: 17px; }
 .auth-btn.signed { padding: 0 5px; }
+
+.auth-btn.icon {
+  width: 44px;
+  padding: 0;
+  justify-content: center;
+  text-decoration: none;
+}
 
 .avatar {
   width: 30px;

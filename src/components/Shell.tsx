@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../i18n";
 import { AuthButton } from "./AuthButton";
+import { ContributeButton } from "./ContributeButton";
 import { LangToggle } from "./LangToggle";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -33,6 +34,7 @@ export function Shell({
         <div className="top-controls">
           <ThemeToggle />
           <LangToggle />
+          <ContributeButton />
           <AuthButton />
         </div>
       </header>
