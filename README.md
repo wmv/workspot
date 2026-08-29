@@ -19,13 +19,14 @@ and group coordination.
 
 ## Status
 
-**Phase: Slice 1 spike, working.** Explore (map + ranked list), venue detail,
-and 10-second pulses run end to end against a local PostGIS database. `pt` and
-`en` ship together — both catalogs are first-class.
+**Live: [workspot.wmv.workers.dev](https://workspot.wmv.workers.dev)** —
+Explore (map + ranked list), venue detail, and 10-second pulses run end to
+end in production. `pt` and `en` ship together — both catalogs are
+first-class.
 
 **Stack:** React + Vite PWA, Hono API, Drizzle, Postgres + PostGIS.
-Production target is Cloudflare Workers + Neon via Hyperdrive; local
-development needs no cloud account at all (see below).
+Production runs on Cloudflare Workers with Neon Postgres via Hyperdrive;
+local development needs no cloud account at all (see below).
 
 ## Getting started (no cloud account needed)
 
@@ -57,7 +58,11 @@ Contributors never need Cloudflare or Neon access:
   read secrets, so deploys are maintainer-only by construction.
 
 Maintainers can also deploy from a machine: `npm run deploy` (requires
-`CLOUDFLARE_API_TOKEN` in the environment or `wrangler login`).
+`CLOUDFLARE_API_TOKEN` in the environment or `wrangler login`). Database
+access for maintainers goes through the Neon CLI: `neon link` pins the
+project in a git-ignored `.neon` file and pulls the branch's connection
+strings into `.env`. Schema changes run against the direct (unpooled) URL
+via `npm run db:migrate`.
 
 ## The one-liner
 
@@ -80,6 +85,9 @@ Maintainers can also deploy from a machine: `npm run deploy` (requires
 
 ## Contributing
 
-Contributions are welcome! We're in the specification phase — feedback, ideas,
-and early collaborators are especially valuable. Open an issue or pull request
-to get started.
+Contributions are welcome — the project is young and early collaborators
+shape it most. Open an issue or pull request to get started. Two ground
+rules from the start: every user-facing string lands in both `pt` and `en`
+catalogs in the same PR, and the local Docker setup above is the supported
+dev path (no cloud accounts needed). Agent skills for working with Neon
+live in `.agents/skills/`.
