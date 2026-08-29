@@ -7,4 +7,9 @@ import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&ur
 // through to the SPA fallback and the map renders no tiles.
 setWorkerUrl(maplibreWorkerUrl);
 
-export const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
+import type { ResolvedTheme } from "./theme";
+
+export const MAP_STYLES: Record<ResolvedTheme, string> = {
+  light: "https://tiles.openfreemap.org/styles/positron",
+  dark: "https://tiles.openfreemap.org/styles/dark",
+};

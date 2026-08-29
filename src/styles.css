@@ -1,15 +1,51 @@
 :root {
+  color-scheme: dark;
   --shade: #1a211c;
   --raised: #24302a;
   --bone: #f3eee4;
   --dust: #9aa39a;
   --laterite: #e08a2c;
+  --accent-ink: #e08a2c;
+  --stale-ink: #d4a36a;
   --open: #8fbf9f;
   --closed: #c17b6a;
   --line: #3a4540;
+  --hover-line: #5a6a62;
+  --hairline: rgba(255, 255, 255, 0.06);
+  --dock: #151b17;
+  --skel-mid: #2c3a33;
+  --map-bg: #141816;
+  --panel-facts: #1e2621;
+  --panel-now-bg: #2a2218;
+  --panel-now-line: #6a4a2a;
+  --scrim: rgba(10, 12, 11, 0.62);
   --display: "Darker Grotesque", system-ui, sans-serif;
   --ui: "Public Sans", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Same warm family as the dark palette: paper instead of shade, ink instead
+   of bone. Accent text darkens for contrast; pin/fill laterite stays brand. */
+[data-theme="light"] {
+  color-scheme: light;
+  --shade: #f4efe5;
+  --raised: #fdfaf3;
+  --bone: #242b25;
+  --dust: #68746a;
+  --accent-ink: #9c5a10;
+  --stale-ink: #8a5a20;
+  --open: #2f7d52;
+  --closed: #a8523d;
+  --line: #ddd5c2;
+  --hover-line: #b3a98f;
+  --hairline: rgba(0, 0, 0, 0.08);
+  --dock: #ece6d6;
+  --skel-mid: #f2ecdf;
+  --map-bg: #e9e5dc;
+  --panel-facts: #eee8d9;
+  --panel-now-bg: #f7e8ce;
+  --panel-now-line: #d9b98a;
+  --scrim: rgba(58, 52, 40, 0.45);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,6 +98,11 @@ header.top {
   line-height: 1;
   color: inherit;
   text-decoration: none;
+}
+
+.top-controls {
+  display: flex;
+  gap: 8px;
 }
 
 .lang {
@@ -119,7 +160,7 @@ header.top {
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.16em;
-  color: var(--laterite);
+  color: var(--accent-ink);
   margin-bottom: 8px;
 }
 
@@ -310,7 +351,7 @@ header.top {
   margin-top: 10px;
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--laterite);
+  color: var(--accent-ink);
 }
 
 .recency::before {
@@ -322,7 +363,7 @@ header.top {
 }
 
 .card.is-stale .recency,
-.card.is-never .recency { color: #d4a36a; }
+.card.is-never .recency { color: var(--stale-ink); }
 
 .cat {
   font-family: var(--mono);
@@ -369,7 +410,7 @@ header.top {
   flex: none;
   margin: 0 16px calc(10px + env(safe-area-inset-bottom, 0px));
   height: 56px;
-  background: #151b17;
+  background: var(--dock);
   border: 1px solid var(--line);
   border-radius: 18px;
   display: flex;
@@ -390,7 +431,7 @@ header.top {
 .skel {
   height: 132px;
   border-radius: 18px;
-  background: linear-gradient(90deg, var(--raised) 25%, #2c3a33 50%, var(--raised) 75%);
+  background: linear-gradient(90deg, var(--raised) 25%, var(--skel-mid) 50%, var(--raised) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.1s ease-in-out infinite;
 }
@@ -507,7 +548,7 @@ header.top {
   height: 100%;
 }
 
-.map-canvas { background: #141816; }
+.map-canvas { background: var(--map-bg); }
 
 .pin {
   width: 12px;
@@ -624,25 +665,25 @@ header.top {
 }
 
 .panel-facts {
-  background: #1e2621;
+  background: var(--panel-facts);
   border: 1px solid var(--line);
 }
 
 .panel-facts h2 { color: var(--dust); }
 
 .panel-now {
-  background: #2a2218;
-  border: 1px solid #6a4a2a;
+  background: var(--panel-now-bg);
+  border: 1px solid var(--panel-now-line);
 }
 
-.panel-now h2 { color: var(--laterite); }
+.panel-now h2 { color: var(--accent-ink); }
 
 .panel dl > div {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   padding: 7px 0;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--hairline);
   font-size: 14px;
 }
 
@@ -657,7 +698,7 @@ header.top {
 }
 
 .panel-note.italic { font-style: italic; }
-.recency-line { color: var(--laterite); font-family: var(--mono); }
+.recency-line { color: var(--accent-ink); font-family: var(--mono); }
 
 .tips { margin-top: 20px; }
 .tips h2 {
@@ -697,7 +738,7 @@ header.top {
   gap: 8px;
   padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
   border-top: 1px solid var(--line);
-  background: #151b17;
+  background: var(--dock);
 }
 
 .detail-bar .cta { flex: 1; }
@@ -791,7 +832,7 @@ header.top {
   .hero { padding: 4px 20px 12px; }
   .hero h1 { font-size: 30px; }
 
-  .card:hover { border-color: #5a6a62; }
+  .card:hover { border-color: var(--hover-line); }
   .card.is-selected:hover { border-color: var(--bone); }
 }
 
@@ -917,7 +958,7 @@ header.top {
 
 @media (min-width: 1024px) {
   .pulse-root {
-    background: rgba(10, 12, 11, 0.62);
+    background: var(--scrim);
     align-items: center;
     justify-content: center;
     padding: 24px;

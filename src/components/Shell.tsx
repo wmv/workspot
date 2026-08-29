@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../i18n";
 import { LangToggle } from "./LangToggle";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Shell({
   children,
@@ -17,7 +18,10 @@ export function Shell({
         <Link to="/" className="wordmark">
           {t("brand")}
         </Link>
-        <LangToggle />
+        <div className="top-controls">
+          <ThemeToggle />
+          <LangToggle />
+        </div>
       </header>
       {children}
     </div>

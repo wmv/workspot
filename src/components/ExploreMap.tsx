@@ -1,7 +1,8 @@
 import { AttributionControl, Map, Marker } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { ORIGIN } from "../lib/geo";
-import { MAP_STYLE as STYLE } from "../lib/maplibre";
+import { MAP_STYLES } from "../lib/maplibre";
+import { useTheme } from "../lib/theme";
 import type { CardModel } from "../lib/venues";
 
 export function ExploreMap({
@@ -25,12 +26,15 @@ export function ExploreMap({
   const puck = useRef<Marker | null>(null);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
+  const { resolved } = useTheme();
+  const themeRef = useRef(resolved);
+  themeRef.current = resolved;
 
   useEffect(() => {
     if (!root.current || mapRef.current) return;
     const map = new Map({
       container: root.current,
-      style: STYLE,
+      style: MAP_STYLES[themeRef.current],
       center: [ORIGIN.lng, ORIGIN.lat],
       zoom: 14.2,
       attributionControl: false,
@@ -79,7 +83,7 @@ export function ExploreMap({
       const el = marker.getElement();
       el.setAttribute("aria-label", card.venue.name);
       el.classList.toggle("is-on", active);
-      el.classList.toggle("is-closed-pin", !card.open);
+      el.classList.toggle("is-closed-pin", card.open === "closed");
     }
 
     if (user) {
@@ -101,6 +105,11 @@ export function ExploreMap({
   useEffect(() => {
     mapRef.current?.resize();
   }, [visible]);
+
+  // DOM markers survive a style swap, so switching themes is just setStyle.
+  useEffect(() => {
+    mapRef.current?.setStyle(MAP_STYLES[resolved]);
+  }, [resolved]);
 
   useEffect(() => {
     const map = mapRef.current;

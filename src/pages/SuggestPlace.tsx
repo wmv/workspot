@@ -5,7 +5,8 @@ import { useI18n } from "../i18n";
 import { postSuggestion } from "../lib/api";
 import { radioArrowPick } from "../lib/keys";
 import { useGeo } from "../lib/location";
-import { MAP_STYLE } from "../lib/maplibre";
+import { MAP_STYLES } from "../lib/maplibre";
+import { useTheme } from "../lib/theme";
 import type { Category } from "../lib/types";
 import { useVenues } from "../lib/venueStore";
 
@@ -14,6 +15,9 @@ const CATEGORIES: Category[] = ["cafe", "cowork", "library", "other"];
 export function SuggestPlace() {
   const { t, locale } = useI18n();
   const { setToast } = useVenues();
+  const { resolved: theme } = useTheme();
+  const themeRef = useRef(theme);
+  themeRef.current = theme;
   const geo = useGeo();
   const navigate = useNavigate();
   const mapRoot = useRef<HTMLDivElement>(null);
@@ -30,7 +34,7 @@ export function SuggestPlace() {
     if (!mapRoot.current || mapRef.current) return;
     const map = new Map({
       container: mapRoot.current,
-      style: MAP_STYLE,
+      style: MAP_STYLES[themeRef.current],
       center: [geo.origin.lng, geo.origin.lat],
       zoom: 15.5,
       attributionControl: false,
@@ -43,6 +47,10 @@ export function SuggestPlace() {
     // The map owns its center after init; geo recentering is handled below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    mapRef.current?.setStyle(MAP_STYLES[theme]);
+  }, [theme]);
 
   useEffect(() => {
     if (geo.status === "granted" && mapRef.current && !centeredOnUser.current) {

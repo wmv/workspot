@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toast } from "./components/Toast";
 import { LocaleProvider } from "./i18n";
+import { ThemeProvider } from "./lib/theme";
 import { VenueProvider } from "./lib/venueStore";
 import { Explore } from "./pages/Explore";
 import { NotFound } from "./pages/NotFound";
@@ -10,21 +11,23 @@ import { VenueDetail } from "./pages/VenueDetail";
 
 export function App() {
   return (
-    <LocaleProvider>
-      <VenueProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Explore />}>
-              <Route path="v/:id" element={<VenueDetail />}>
-                <Route path="pulse" element={<PulseScreen />} />
+    <ThemeProvider>
+      <LocaleProvider>
+        <VenueProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Explore />}>
+                <Route path="v/:id" element={<VenueDetail />}>
+                  <Route path="pulse" element={<PulseScreen />} />
+                </Route>
               </Route>
-            </Route>
-            <Route path="/suggest" element={<SuggestPlace />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Toast />
-        </BrowserRouter>
-      </VenueProvider>
-    </LocaleProvider>
+              <Route path="/suggest" element={<SuggestPlace />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Toast />
+          </BrowserRouter>
+        </VenueProvider>
+      </LocaleProvider>
+    </ThemeProvider>
   );
 }
