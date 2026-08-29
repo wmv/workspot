@@ -992,7 +992,7 @@ header.top {
   touch-action: manipulation;
 }
 
-.pulse-opts button[aria-pressed="true"] {
+.pulse-opts button[aria-checked="true"] {
   background: var(--bone);
   color: var(--shade);
   border-color: var(--bone);
