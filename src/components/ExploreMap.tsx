@@ -1,8 +1,14 @@
-import { AttributionControl, Map, Marker } from "maplibre-gl";
+import { AttributionControl, Map, Marker, setWorkerUrl } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { ORIGIN } from "../lib/geo";
 import type { CardModel } from "../lib/venues";
 import "maplibre-gl/dist/maplibre-gl.css";
+import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+
+// MapLibre resolves its worker relative to import.meta.url at runtime, which
+// Vite cannot see at build time — without this the worker request falls
+// through to the SPA fallback and the map renders no tiles.
+setWorkerUrl(maplibreWorkerUrl);
 
 const STYLE = "https://tiles.openfreemap.org/styles/liberty";
 
