@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WorkSpot — logo concepts</title>
+<style>
+  body { margin: 0; font: 14px "Public Sans", system-ui, sans-serif; }
+  .band { padding: 26px 18px 30px; }
+  .dark { background: #1a211c; color: #f3eee4; }
+  .light { background: #f4efe5; color: #242b25; }
+  .band h2 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .55; margin: 0 0 18px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px; }
+  h3 { font-size: 15px; margin: 0 0 3px; }
+  p { font-size: 12px; opacity: .6; margin: 0 0 12px; line-height: 1.4; }
+  .row { display: flex; gap: 12px; align-items: flex-end; }
+  .fav { display: flex; align-items: center; gap: 6px; border-radius: 8px; padding: 5px 9px; font-size: 11px; }
+  .dark .fav { background: #24302a; }
+  .light .fav { background: #fdfaf3; border: 1px solid #ddd5c2; }
+  img { display: block; }
+</style>
+</head>
+<body>
+<script>
+const marks = {
+  "1 · O Sinal": [
+    "O ponto AGORA com anéis de sinal — já é o batimento da app.",
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1a211c"/><circle cx="32" cy="32" r="9.5" fill="#e08a2c"/><circle cx="32" cy="32" r="18" fill="none" stroke="#e08a2c" stroke-opacity=".5" stroke-width="3.5"/><circle cx="32" cy="32" r="26" fill="none" stroke="#e08a2c" stroke-opacity=".2" stroke-width="3.5"/></svg>`,
+  ],
+  "2 · Pino-Tomada": [
+    "Pino de mapa com face de tomada — um sítio para ligar o portátil.",
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1a211c"/><path d="M32 7c-9.9 0-18 7.8-18 17.4C14 38.5 32 57 32 57s18-18.5 18-32.6C50 14.8 41.9 7 32 7z" fill="#e08a2c"/><rect x="25.6" y="16.5" width="4.6" height="10" rx="2.3" fill="#1a211c"/><rect x="33.8" y="16.5" width="4.6" height="10" rx="2.3" fill="#1a211c"/></svg>`,
+  ],
+  "3 · W-Spot": [
+    "O W do wordmark com o spot por cima.",
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1a211c"/><path d="M13 24 L21.5 47 L32 30 L42.5 47 L51 24" fill="none" stroke="#f3eee4" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="16" r="5.5" fill="#e08a2c"/></svg>`,
+  ],
+};
+for (const theme of ["dark", "light"]) {
+  document.write(`<div class="band ${theme}"><h2>${theme === "dark" ? "Tema escuro" : "Tema claro"}</h2><div class="grid">`);
+  for (const [name, [blurb, svg]] of Object.entries(marks)) {
+    const url = "data:image/svg+xml;base64," + btoa(svg);
+    document.write(`<div><h3>${name}</h3><p>${blurb}</p>
+      <div class="row">
+        <img src="${url}" width="96" height="96" alt="${name} 96px"/>
+        <img src="${url}" width="48" height="48" alt="${name} 48px"/>
+        <img src="${url}" width="32" height="32" alt="${name} 32px"/>
+        <span class="fav"><img src="${url}" width="16" height="16" alt=""/> WorkSpot — separador</span>
+      </div></div>`);
+  }
+  document.write(`</div></div>`);
+}
+</script>
+</body>
+</html>

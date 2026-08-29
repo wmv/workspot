@@ -130,6 +130,17 @@ header.top {
   color: var(--shade);
 }
 
+/* Theme icons need more presence than the PT/EN mono caps. */
+.lang.theme button {
+  display: grid;
+  place-items: center;
+}
+
+.lang.theme button svg {
+  width: 19px;
+  height: 19px;
+}
+
 :focus-visible {
   outline: 2px solid var(--laterite);
   outline-offset: 2px;
