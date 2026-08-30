@@ -2,7 +2,7 @@
   <img src="public/favicon.svg" width="88" alt="WorkSpot logo" />
 </p>
 
-# WorkSpot (working codename)
+# WorkSpot
 
 Created at the **[Cursor hackathon in Luanda](https://cursor.com)**.
 
