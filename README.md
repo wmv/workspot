@@ -15,10 +15,7 @@ A mobile-first app that answers one question better than anything else:
 
 ## Status
 
-**Live: [workspot.wmv.workers.dev](https://workspot.wmv.workers.dev)** —
-functional and healthy. Explore (map + ranked list), venue detail with
-directions-first actions, 10-second pulses, GitHub sign-in, cycling hero
-copy, light/dark themes, and `pt`/`en` all run end to end in production.
+**Live: [workspot.wmv.workers.dev](https://workspot.wmv.workers.dev)**.
 
 **Suggest a spot:** signed-in users only. Submissions show as **pending** on
 the map until a **verifier** approves them via the API — no admin UI. Audit
