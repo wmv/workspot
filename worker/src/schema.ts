@@ -59,6 +59,16 @@ export const venueSuggestions = pgTable("venue_suggestions", {
   locale: text("locale").notNull(),
   status: text("status").notNull().default("pending"),
   ipHash: text("ip_hash"),
+  submittedBy: text("submitted_by"),
+  submittedByEmail: text("submitted_by_email"),
+  reviewedBy: text("reviewed_by"),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const verifiers = pgTable("verifiers", {
+  userId: text("user_id").primaryKey(),
+  email: text("email"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

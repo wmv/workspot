@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useI18n } from "../i18n";
 import { postSuggestion } from "../lib/api";
+import { authClient, signInWithGitHub } from "../lib/auth";
 import { radioArrowPick } from "../lib/keys";
 import { useGeo } from "../lib/location";
 import { MAP_STYLES } from "../lib/maplibre";
@@ -15,6 +16,7 @@ const CATEGORIES: Category[] = ["cafe", "cowork", "library", "other"];
 export function SuggestPlace() {
   const { t, locale } = useI18n();
   const { setToast } = useVenues();
+  const { data: session, isPending } = authClient.useSession();
   const { resolved: theme } = useTheme();
   const themeRef = useRef(theme);
   themeRef.current = theme;
@@ -27,11 +29,12 @@ export function SuggestPlace() {
   const [name, setName] = useState("");
   const [category, setCategory] = useState<Category | null>(null);
   const [note, setNote] = useState("");
-  const [error, setError] = useState<"fail" | "limit" | null>(null);
+  const [error, setError] = useState<"fail" | "limit" | "auth" | null>(null);
   const [sending, setSending] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
 
   useEffect(() => {
-    if (!mapRoot.current || mapRef.current) return;
+    if (!mapRoot.current || mapRef.current || !session) return;
     const map = new Map({
       container: mapRoot.current,
       style: MAP_STYLES[themeRef.current],
@@ -44,9 +47,8 @@ export function SuggestPlace() {
       map.remove();
       mapRef.current = null;
     };
-    // The map owns its center after init; geo recentering is handled below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     mapRef.current?.setStyle(MAP_STYLES[theme]);
@@ -62,7 +64,7 @@ export function SuggestPlace() {
   const complete = name.trim().length >= 2 && category !== null;
 
   async function submit() {
-    if (!complete || sending || !mapRef.current) return;
+    if (!complete || sending || !mapRef.current || !session) return;
     const center = mapRef.current.getCenter();
     setSending(true);
     setError(null);
@@ -78,10 +80,51 @@ export function SuggestPlace() {
       setToast(t("suggestThanks"));
       navigate("/");
     } catch (e) {
-      setError(e instanceof Error && e.message.includes("429") ? "limit" : "fail");
+      if (e instanceof Error && e.message.includes("401")) setError("auth");
+      else setError(e instanceof Error && e.message.includes("429") ? "limit" : "fail");
     } finally {
       setSending(false);
     }
+  }
+
+  if (isPending) {
+    return (
+      <div className="suggest-root">
+        <p className="suggest-intro">{t("locPending")}</p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="suggest-root">
+        <header className="suggest-head">
+          <Link className="ghost" to="/">
+            ← {t("back")}
+          </Link>
+          <h1>{t("suggestTitle")}</h1>
+          <p className="suggest-intro">{t("suggestSignIn")}</p>
+        </header>
+        <button
+          className="cta inline"
+          type="button"
+          disabled={signingIn}
+          onClick={async () => {
+            setSigningIn(true);
+            try {
+              const res = await signInWithGitHub();
+              if (res.error) setToast(t("signInFail"));
+            } catch {
+              setToast(t("signInFail"));
+            } finally {
+              setSigningIn(false);
+            }
+          }}
+        >
+          {t("signIn")}
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -143,7 +186,13 @@ export function SuggestPlace() {
 
         {error && (
           <button className="banner err" type="button" onClick={submit}>
-            {t(error === "limit" ? "suggestLimit" : "suggestFail")}
+            {t(
+              error === "limit"
+                ? "suggestLimit"
+                : error === "auth"
+                  ? "suggestSignIn"
+                  : "suggestFail",
+            )}
           </button>
         )}
 

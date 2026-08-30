@@ -2,11 +2,13 @@ import { AttributionControl, Map, Marker } from "maplibre-gl";
 import { useEffect, useRef } from "react";
 import { ORIGIN } from "../lib/geo";
 import { MAP_STYLES } from "../lib/maplibre";
+import type { PendingSuggestion } from "../lib/pendingSuggestions";
 import { useTheme } from "../lib/theme";
 import type { CardModel } from "../lib/venues";
 
 export function ExploreMap({
   cards,
+  pending = [],
   selectedId,
   hoverId,
   user,
@@ -14,6 +16,7 @@ export function ExploreMap({
   visible,
 }: {
   cards: CardModel[];
+  pending?: PendingSuggestion[];
   selectedId?: string;
   hoverId?: string | null;
   user?: { lat: number; lng: number } | null;
@@ -23,6 +26,7 @@ export function ExploreMap({
   const root = useRef<HTMLDivElement>(null);
   const mapRef = useRef<Map | null>(null);
   const markers = useRef<globalThis.Map<string, Marker>>(new globalThis.Map());
+  const pendingMarkers = useRef<globalThis.Map<string, Marker>>(new globalThis.Map());
   const puck = useRef<Marker | null>(null);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
@@ -47,6 +51,7 @@ export function ExploreMap({
       map.remove();
       mapRef.current = null;
       markers.current.clear();
+      pendingMarkers.current.clear();
       puck.current = null;
     };
   }, []);
@@ -101,7 +106,28 @@ export function ExploreMap({
       puck.current.remove();
       puck.current = null;
     }
-  }, [cards, selectedId, hoverId, user]);
+
+    const pendingIds = new Set(pending.map((s) => s.id));
+    for (const [id, marker] of pendingMarkers.current) {
+      if (!pendingIds.has(id)) {
+        marker.remove();
+        pendingMarkers.current.delete(id);
+      }
+    }
+    for (const suggestion of pending) {
+      let marker = pendingMarkers.current.get(suggestion.id);
+      if (!marker) {
+        const el = document.createElement("div");
+        el.className = "pin is-pending-pin";
+        el.setAttribute("aria-label", suggestion.name);
+        marker = new Marker({ element: el, anchor: "center" })
+          .setLngLat([suggestion.lng, suggestion.lat])
+          .addTo(map);
+        pendingMarkers.current.set(suggestion.id, marker);
+      }
+      marker.getElement().setAttribute("aria-label", suggestion.name);
+    }
+  }, [cards, pending, selectedId, hoverId, user]);
 
   useEffect(() => {
     mapRef.current?.resize();

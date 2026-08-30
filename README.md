@@ -24,13 +24,15 @@ and group coordination.
 ## Status
 
 **Live: [workspot.wmv.workers.dev](https://workspot.wmv.workers.dev)** —
-functional, healthy, and growing. Explore (map + ranked list), venue detail,
-10-second pulses, suggest-a-spot with an editorial review queue, GitHub
-sign-in, and light/dark themes all run end to end in production, in `pt` and
-`en`. The seed is small on purpose — a handful of real, verified places in
-Luanda — and grows through suggestions and pulses, not scraping.
+functional and healthy. Explore (map + ranked list), venue detail with
+directions-first actions, 10-second pulses, GitHub sign-in, cycling hero
+copy, light/dark themes, and `pt`/`en` all run end to end in production.
 
-**Stack:** React + Vite PWA, Hono API, Drizzle, Postgres + PostGIS.
+**Suggest a spot:** signed-in users only. Submissions show as **pending** on
+the map until a **verifier** approves them via the API — no admin UI. Audit
+trail records who submitted and who reviewed.
+
+**Stack:** React + Vite PWA, Hono API, Drizzle, Postgres + PostGIS, Neon Auth.
 Production runs on Cloudflare Workers with Neon Postgres via Hyperdrive;
 local development needs no cloud account at all (see below).
 
@@ -77,23 +79,37 @@ via `npm run db:migrate`.
 
 ## How new places get on the map
 
-Anyone can propose a venue from the app ("Sugerir um sítio": name, category,
-pin on the map, optional note). Suggestions land in a `venue_suggestions`
-review queue — nothing appears on the map unreviewed. A maintainer approves or
-rejects through the admin API (Bearer `ADMIN_TOKEN`, a Worker secret):
+Signed-in users can propose a venue from the app ("Sugerir um sítio": name,
+category, pin on the map, optional note). Each suggestion is stored with the
+submitter's account id and email for audit. It appears on the map as **pending**
+until a **verifier** approves it — only then does it join the ranked list and
+suggestion engine.
+
+Verifiers are privileged accounts, not a separate admin UI. Grant the role by
+inserting into the `verifiers` table (or set `VERIFIER_USER_IDS` on the Worker
+for bootstrap):
+
+```sql
+INSERT INTO verifiers (user_id, email) VALUES ('<neon-auth-user-id>', 'you@example.com');
+```
+
+Review the queue and approve/reject via the API (Bearer session JWT for
+verifiers, or legacy `ADMIN_TOKEN`):
 
 ```bash
-curl -H "Authorization: Bearer $ADMIN_TOKEN" \
+# Verifier: session token from the browser console after sign-in:
+# (await authClient.getSession()).data.session.token
+TOKEN="<paste-session-token>"
+curl -H "Authorization: Bearer $TOKEN" \
   https://workspot.wmv.workers.dev/api/admin/suggestions          # pending queue
-curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+curl -X POST -H "Authorization: Bearer $TOKEN" \
   https://workspot.wmv.workers.dev/api/admin/suggestions/<id>/approve
-curl -X POST -H "Authorization: Bearer $ADMIN_TOKEN" \
+curl -X POST -H "Authorization: Bearer $TOKEN" \
   https://workspot.wmv.workers.dev/api/admin/suggestions/<id>/reject
 ```
 
 Approval creates the venue with every amenity `unknown` — facts get filled in
-by people on the ground via pulses, never invented. An in-app review UI is
-[#1](https://github.com/wmv/workspot/issues/1).
+by people on the ground via pulses, never invented.
 
 ## The one-liner
 

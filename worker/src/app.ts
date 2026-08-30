@@ -1,14 +1,16 @@
-import { eq, sql } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { ORIGIN } from "../../src/lib/geo.ts";
 import type { Category, LivePulse, Locale } from "../../src/lib/types.ts";
+import { bearer, resolveUser, type AuthUser } from "./auth.ts";
 import { makeDb, type Db, type Hyperdrive } from "./db.ts";
 import { loadVenue, loadVenues, parseChips, rankedPayload } from "./load.ts";
 import { pulses, signals, venueSuggestions } from "./schema.ts";
+import { isVerifier } from "./verifiers.ts";
 
-type Env = { HYPERDRIVE?: Hyperdrive; ADMIN_TOKEN?: string };
-type Vars = { db: Db };
+type Env = { HYPERDRIVE?: Hyperdrive; ADMIN_TOKEN?: string; VERIFIER_USER_IDS?: string };
+type Vars = { db: Db; user?: AuthUser };
 
 const ATTRS = ["plugs", "noise", "crowd", "calls", "group4"] as const;
 const CATEGORIES: ReadonlySet<string> = new Set(["cafe", "library", "cowork", "other"]);
@@ -41,6 +43,33 @@ function parseBbox(raw: string | undefined): [number, number, number, number] | 
 }
 
 export const app = new Hono<{ Bindings: Env; Variables: Vars }>();
+
+async function requireUser(c: { req: { header: (n: string) => string | undefined }; set: (k: "user", v: AuthUser) => void; json: (body: unknown, status?: number) => Response }) {
+  const user = await resolveUser(bearer(c as never));
+  if (!user) return c.json({ error: "unauthorized" }, 401);
+  c.set("user", user);
+  return null;
+}
+
+async function requireVerifier(c: {
+  env: Env;
+  var: Vars;
+  req: { header: (n: string) => string | undefined };
+  set: (k: "user", v: AuthUser) => void;
+  json: (body: unknown, status?: number) => Response;
+}) {
+  const token = bearer(c as never)?.replace(/^Bearer\s+/i, "").trim();
+  const expected = adminToken(c.env);
+  if (expected && token === expected) return null;
+
+  const user = await resolveUser(bearer(c as never));
+  if (!user) return c.json({ error: "unauthorized" }, 401);
+  c.set("user", user);
+  if (!(await isVerifier(c.var.db, user.id, c.env))) {
+    return c.json({ error: "forbidden" }, 403);
+  }
+  return null;
+}
 
 app.use("/api/*", cors({ origin: "*" }));
 
@@ -126,7 +155,46 @@ app.post("/api/venues/:id/pulses", async (c) => {
   return c.json({ venue: next }, 201);
 });
 
+app.get("/api/me", async (c) => {
+  const user = await resolveUser(bearer(c));
+  if (!user) return c.json({ user: null, isVerifier: false });
+  const verifier = await isVerifier(c.var.db, user.id, c.env);
+  return c.json({
+    user: { id: user.id, email: user.email, name: user.name ?? null },
+    isVerifier: verifier,
+  });
+});
+
+app.get("/api/suggestions/mine", async (c) => {
+  const denied = await requireUser(c);
+  if (denied) return denied;
+  const user = c.var.user!;
+  const rows = await c.var.db
+    .select({
+      id: venueSuggestions.id,
+      name: venueSuggestions.name,
+      category: venueSuggestions.category,
+      lat: venueSuggestions.lat,
+      lng: venueSuggestions.lng,
+      status: venueSuggestions.status,
+      createdAt: venueSuggestions.createdAt,
+    })
+    .from(venueSuggestions)
+    .where(
+      and(
+        eq(venueSuggestions.submittedBy, user.id),
+        eq(venueSuggestions.status, "pending"),
+      ),
+    )
+    .orderBy(venueSuggestions.createdAt);
+  return c.json({ suggestions: rows });
+});
+
 app.post("/api/suggestions", async (c) => {
+  const denied = await requireUser(c);
+  if (denied) return denied;
+  const user = c.var.user!;
+
   const body = (await c.req.json().catch(() => ({}))) as {
     name?: string;
     category?: string;
@@ -160,7 +228,7 @@ app.post("/api/suggestions", async (c) => {
   const accepted = await db.transaction(async (tx) => {
     const recent = await tx.execute(sql`
       SELECT count(*)::int AS n FROM venue_suggestions
-      WHERE ip_hash = ${ipHash} AND created_at > now() - interval '1 day'
+      WHERE submitted_by = ${user.id} AND created_at > now() - interval '1 day'
     `);
     if ((recent.rows[0] as { n: number }).n >= SUGGESTIONS_PER_DAY) return false;
     await tx.insert(venueSuggestions).values({
@@ -172,6 +240,8 @@ app.post("/api/suggestions", async (c) => {
       note,
       locale,
       ipHash,
+      submittedBy: user.id,
+      submittedByEmail: user.email,
     });
     return true;
   });
@@ -179,12 +249,11 @@ app.post("/api/suggestions", async (c) => {
   return c.json({ ok: true, id }, 201);
 });
 
-// --- Editorial review (bearer token; suggestions go live only through here) ---
+// --- Review queue: verifier accounts (or legacy ADMIN_TOKEN bearer) ---
 
 app.use("/api/admin/*", async (c, next) => {
-  const expected = adminToken(c.env);
-  const got = c.req.header("authorization")?.replace(/^Bearer\s+/i, "");
-  if (!expected || got !== expected) return c.json({ error: "unauthorized" }, 401);
+  const denied = await requireVerifier(c);
+  if (denied) return denied;
   await next();
 });
 
@@ -199,29 +268,13 @@ app.get("/api/admin/suggestions", async (c) => {
   return c.json({ suggestions: rows });
 });
 
-// Atomically claim a pending suggestion. Plain SELECT-then-UPDATE breaks here:
-// Hyperdrive caches SELECTs for up to a minute, so a re-review would read a
-// stale "pending" row. UPDATE ... RETURNING is a write and never cached.
-async function claimSuggestion(
-  db: Db,
-  id: string,
-  status: "approved" | "rejected",
-) {
-  const res = await db.execute(sql`
-    UPDATE venue_suggestions SET status = ${status}
-    WHERE id = ${id} AND status = 'pending'
-    RETURNING *
-  `);
-  return res.rows[0] as
-    | { id: string; name: string; category: string; lat: number; lng: number; note: string | null; locale: string }
-    | undefined;
-}
-
 app.post("/api/admin/suggestions/:id/approve", async (c) => {
   const db = c.var.db;
+  const reviewer = c.var.user?.id ?? "admin-token";
   const venueId = await db.transaction(async (tx) => {
     const res = await tx.execute(sql`
-      UPDATE venue_suggestions SET status = 'approved'
+      UPDATE venue_suggestions
+      SET status = 'approved', reviewed_by = ${reviewer}, reviewed_at = now()
       WHERE id = ${c.req.param("id")} AND status = 'pending'
       RETURNING id, name, category, lat, lng, note, locale
     `);
@@ -265,7 +318,13 @@ app.post("/api/admin/suggestions/:id/approve", async (c) => {
 
 app.post("/api/admin/suggestions/:id/reject", async (c) => {
   const db = c.var.db;
-  const claimed = await claimSuggestion(db, c.req.param("id"), "rejected");
-  if (!claimed) return c.json({ error: "not_pending" }, 409);
+  const reviewer = c.var.user?.id ?? "admin-token";
+  const res = await db.execute(sql`
+    UPDATE venue_suggestions
+    SET status = 'rejected', reviewed_by = ${reviewer}, reviewed_at = now()
+    WHERE id = ${c.req.param("id")} AND status = 'pending'
+    RETURNING id
+  `);
+  if (!res.rows[0]) return c.json({ error: "not_pending" }, 409);
   return c.json({ ok: true });
 });

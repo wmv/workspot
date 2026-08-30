@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Outlet, useMatch, useNavigate } from "react-router-dom";
 import { ExploreMap } from "../components/ExploreMap";
+import { HeroHeadline } from "../components/HeroHeadline";
+import { PendingCard } from "../components/PendingCard";
 import { Shell } from "../components/Shell";
 import { VenueCard } from "../components/VenueCard";
 import { useI18n } from "../i18n";
+import { fetchMySuggestions } from "../lib/api";
+import { authClient } from "../lib/auth";
 import { inSeedNeighborhood, useGeo } from "../lib/location";
+import { toPendingSuggestion, type PendingSuggestion } from "../lib/pendingSuggestions";
 import type { ChipId } from "../lib/types";
 import { CHIP_ORDER, DEFAULT_CHIPS } from "../lib/types";
 import { useVenues } from "../lib/venueStore";
@@ -23,6 +28,8 @@ export function Explore() {
   const [offline, setOffline] = useState(() =>
     typeof navigator !== "undefined" ? !navigator.onLine : false,
   );
+  const [pending, setPending] = useState<PendingSuggestion[]>([]);
+  const { data: session } = authClient.useSession();
   const geo = useGeo();
   const { venues } = useVenues();
   const detailMatch = useMatch("/v/:id");
@@ -65,12 +72,29 @@ export function Explore() {
     if (!selectedId) setFicha(false);
   }, [selectedId]);
 
+  useEffect(() => {
+    if (!session) {
+      setPending([]);
+      return;
+    }
+    let cancelled = false;
+    void fetchMySuggestions()
+      .then((data) => {
+        if (!cancelled) {
+          setPending(data.suggestions.map(toPendingSuggestion));
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setPending([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
+
   function toggle(id: ChipId) {
     setChips((prev) => ({ ...prev, [id]: !prev[id] }));
   }
-
-  const locLabel =
-    geo.status === "granted" ? t("locNear") : t("locFallback");
 
   return (
     <Shell wide>
@@ -78,20 +102,11 @@ export function Explore() {
         className={`explore-body ${view === "map" ? "is-map" : ""} ${selectedId ? "is-detail" : ""} ${showFullDetail ? "is-ficha" : ""}`}
       >
         <div className="explore-col">
-          <button className="loc" type="button" onClick={geo.request}>
-            <svg viewBox="0 0 24 24" strokeWidth="2" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 3v2M12 19v2M3 12h2M19 12h2" />
-            </svg>
-            {locLabel}
-          </button>
-
           <section className="hero">
-            <p className="eyebrow">
+            <p className="eyebrow" aria-label={t("now")}>
               <span className="dot" aria-hidden="true" />
-              {t("now")}
             </p>
-            <h1>{t("hero")}</h1>
+            <HeroHeadline />
             <p className="count">
               {canShowCards
                 ? t("count", { n: venues.length, m: cards.length })
@@ -197,16 +212,16 @@ export function Explore() {
                 />
               ))}
 
-            <Link className="suggest-entry" to="/suggest">
-              + {t("suggestEntry")}
-            </Link>
+            {pending.map((s) => (
+              <PendingCard key={s.id} suggestion={s} />
+            ))}
           </main>
 
           <nav className="dock" aria-label="Navegação">
-            <span>
-              <i />
-              {t("tab")}
-            </span>
+            <Link className="dock-action" to="/suggest">
+              <span className="dock-plus" aria-hidden="true">+</span>
+              {t("suggestEntry")}
+            </Link>
           </nav>
         </div>
 
@@ -214,6 +229,7 @@ export function Explore() {
           <div className="map-stack">
             <ExploreMap
               cards={canShowCards ? cards : []}
+              pending={pending}
               selectedId={selectedId}
               hoverId={hoverId}
               user={geo.status === "granted" ? geo.origin : null}
@@ -228,9 +244,15 @@ export function Explore() {
                   showFit={extraOn}
                 />
                 <div className="sheet-actions">
+                  <a
+                    className="cta inline"
+                    href={`geo:${selectedCard.venue.lat},${selectedCard.venue.lng}`}
+                  >
+                    {t("directions")}
+                  </a>
                   {wide ? (
                     <button
-                      className="cta inline"
+                      className="ghost"
                       type="button"
                       onClick={() => setFicha(true)}
                     >
@@ -238,19 +260,13 @@ export function Explore() {
                     </button>
                   ) : (
                     <button
-                      className="cta inline"
+                      className="ghost"
                       type="button"
                       onClick={() => setView("list")}
                     >
                       {t("viewPlace")}
                     </button>
                   )}
-                  <a
-                    className="ghost"
-                    href={`geo:${selectedCard.venue.lat},${selectedCard.venue.lng}`}
-                  >
-                    {t("directions")}
-                  </a>
                 </div>
               </div>
             )}

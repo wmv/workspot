@@ -33,6 +33,13 @@ export function VenueDetail() {
   const pulse = latestPulse(venue);
   const pulseN = venue.pulses.length;
   const geo = `geo:${venue.lat},${venue.lng}`;
+  const liveLine = pulse
+    ? [
+        t(`val.pulse.noise.${pulse.noise}`),
+        t(`val.pulse.plugs.${pulse.plugs}`),
+        t(`val.pulse.crowd.${pulse.crowd}`),
+      ].join(" · ")
+    : null;
 
   return (
     <div className={`detail ${open ? "" : "is-closed-venue"}`}>
@@ -51,34 +58,8 @@ export function VenueDetail() {
             </span>
             <span>{hoursLabel(venue.hours, locale)}</span>
           </p>
+          {liveLine && <p className="detail-live">{liveLine}</p>}
         </header>
-
-        <section className="panel panel-facts">
-          <h2>{t("factsTitle")}</h2>
-          <dl>
-            <div>
-              <dt>{t("row.plugs")}</dt>
-              <dd>{t(`val.plugs.${venue.facts.plugs}`)}</dd>
-            </div>
-            <div>
-              <dt>{t("row.wifi")}</dt>
-              <dd>{t(`val.wifi.${venue.facts.wifi}`)}</dd>
-            </div>
-            <div>
-              <dt>{t("row.parking")}</dt>
-              <dd>{t(`val.parking.${venue.facts.parking}`)}</dd>
-            </div>
-            <div>
-              <dt>{t("row.groups")}</dt>
-              <dd>{t(`val.groups.${venue.facts.groups}`)}</dd>
-            </div>
-            <div>
-              <dt>{t("row.calls")}</dt>
-              <dd>{t(`val.calls.${venue.facts.calls}`)}</dd>
-            </div>
-          </dl>
-          <p className="panel-note">{t("factsNote")}</p>
-        </section>
 
         <section className="panel panel-now">
           <h2>{t("nowTitle")}</h2>
@@ -113,11 +94,37 @@ export function VenueDetail() {
                 {pulse.confidence === "remote" && ` · ${t("pulseRemoteTag")}`}
               </p>
               {pulse.note && <p className="panel-note">{pulse.note}</p>}
-              <p className="panel-note italic">{t("patternNone")}</p>
             </>
           ) : (
             <p className="panel-note">{t("noPulses")}</p>
           )}
+        </section>
+
+        <section className="panel panel-facts">
+          <h2>{t("factsTitle")}</h2>
+          <dl>
+            <div>
+              <dt>{t("row.plugs")}</dt>
+              <dd>{t(`val.plugs.${venue.facts.plugs}`)}</dd>
+            </div>
+            <div>
+              <dt>{t("row.wifi")}</dt>
+              <dd>{t(`val.wifi.${venue.facts.wifi}`)}</dd>
+            </div>
+            <div>
+              <dt>{t("row.parking")}</dt>
+              <dd>{t(`val.parking.${venue.facts.parking}`)}</dd>
+            </div>
+            <div>
+              <dt>{t("row.groups")}</dt>
+              <dd>{t(`val.groups.${venue.facts.groups}`)}</dd>
+            </div>
+            <div>
+              <dt>{t("row.calls")}</dt>
+              <dd>{t(`val.calls.${venue.facts.calls}`)}</dd>
+            </div>
+          </dl>
+          <p className="panel-note">{t("factsNote")}</p>
         </section>
 
         {venue.tips.length > 0 && (
@@ -138,20 +145,12 @@ export function VenueDetail() {
       </div>
 
       <div className="detail-bar">
-        <Link className="cta inline" to={`/v/${venue.id}/pulse`}>
-          {t("imHere")}
-        </Link>
-        <a className="ghost" href={geo}>
+        <a className="cta inline" href={geo}>
           {t("directions")}
         </a>
-        <button
-          className="ghost"
-          type="button"
-          disabled
-          aria-label={`${t("save")} — ${t("saveSoon")}`}
-        >
-          {t("save")}
-        </button>
+        <Link className="ghost detail-secondary" to={`/v/${venue.id}/pulse`}>
+          {t("imHere")}
+        </Link>
       </div>
       <Outlet />
     </div>

@@ -71,6 +71,20 @@ CREATE INDEX IF NOT EXISTS venues_geom_gix ON venues USING GIST (geom);
 CREATE INDEX IF NOT EXISTS signals_venue_at ON signals (venue_id, at DESC);
 CREATE INDEX IF NOT EXISTS suggestions_status ON venue_suggestions (status, created_at DESC);
 CREATE INDEX IF NOT EXISTS suggestions_ip ON venue_suggestions (ip_hash, created_at DESC);
+
+ALTER TABLE venue_suggestions ADD COLUMN IF NOT EXISTS submitted_by TEXT;
+ALTER TABLE venue_suggestions ADD COLUMN IF NOT EXISTS submitted_by_email TEXT;
+ALTER TABLE venue_suggestions ADD COLUMN IF NOT EXISTS reviewed_by TEXT;
+ALTER TABLE venue_suggestions ADD COLUMN IF NOT EXISTS reviewed_at TIMESTAMPTZ;
+
+CREATE TABLE IF NOT EXISTS verifiers (
+  user_id TEXT PRIMARY KEY,
+  email TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS suggestions_submitted_by
+  ON venue_suggestions (submitted_by, created_at DESC);
 `;
 
 const client = new pg.Client({ connectionString: url });
