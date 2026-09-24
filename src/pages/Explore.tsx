@@ -22,6 +22,7 @@ export function Explore() {
   const navigate = useNavigate();
   const wide = useWide();
   const [chips, setChips] = useState(DEFAULT_CHIPS);
+  const [searchQuery, setSearchQuery] = useState("");
   const [view, setView] = useState<"list" | "map">("list");
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [ficha, setFicha] = useState(false);
@@ -41,17 +42,35 @@ export function Explore() {
     () => rankVenues(venues, chips, locale, geo.origin),
     [chips, locale, geo.origin, venues],
   );
-  const selectedCard = cards.find((c) => c.venue.id === selectedId);
+
+  const filteredCards = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return cards;
+    return cards.filter((c) => {
+      const nameMatch = c.venue.name.toLowerCase().includes(q);
+      const catMatch =
+        c.venue.category.toLowerCase().includes(q) ||
+        t(`cat.${c.venue.category}`).toLowerCase().includes(q);
+      const tipsMatch = c.venue.tips.some((tip) =>
+        tip.text.toLowerCase().includes(q),
+      );
+      return nameMatch || catMatch || tipsMatch;
+    });
+  }, [cards, searchQuery, t]);
+
+  const selectedCard = filteredCards.find((c) => c.venue.id === selectedId);
 
   const extraOn = CHIP_ORDER.some((id) => id !== "open" && chips[id]);
-  const showList = geo.status === "granted" && nearby && cards.length > 0;
+  const showSearchEmpty = Boolean(searchQuery.trim()) && filteredCards.length === 0;
+  const showList = geo.status === "granted" && nearby && filteredCards.length > 0;
   const showDenied = geo.status === "denied";
   const showPending = geo.status === "pending";
   const showBbox = geo.status === "granted" && !nearby;
   const showTight =
-    (geo.status === "granted" && nearby && cards.length === 0) ||
-    (geo.status === "unavailable" && cards.length === 0);
-  const showFallbackList = geo.status === "unavailable" && cards.length > 0;
+    !showSearchEmpty &&
+    ((geo.status === "granted" && nearby && filteredCards.length === 0) ||
+      (geo.status === "unavailable" && filteredCards.length === 0));
+  const showFallbackList = geo.status === "unavailable" && filteredCards.length > 0;
   const canShowCards = showList || showFallbackList;
 
   const showFullDetail =
@@ -109,12 +128,48 @@ export function Explore() {
             <HeroHeadline />
             <p className="count">
               {canShowCards
-                ? t("count", { n: venues.length, m: cards.length })
+                ? t("count", { n: venues.length, m: filteredCards.length })
                 : showTight
                   ? t("countNone")
                   : "\u00a0"}
             </p>
           </section>
+
+          <div className="search-box">
+            <span className="search-icon" aria-hidden="true">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </span>
+            <input
+              type="text"
+              className="search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t("searchPlaceholder")}
+              aria-label={t("searchPlaceholder")}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={() => setSearchQuery("")}
+                aria-label={t("clearSearch")}
+              >
+                ×
+              </button>
+            )}
+          </div>
 
           <div
             className="chips"
@@ -201,8 +256,21 @@ export function Explore() {
               </div>
             )}
 
+            {showSearchEmpty && (
+              <div className="empty-block">
+                <p>{t("searchEmpty", { q: searchQuery })}</p>
+                <button
+                  className="cta inline"
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                >
+                  {t("clearSearch")}
+                </button>
+              </div>
+            )}
+
             {canShowCards &&
-              cards.map((card) => (
+              filteredCards.map((card) => (
                 <VenueCard
                   key={card.venue.id}
                   card={card}
@@ -228,7 +296,7 @@ export function Explore() {
         <aside className="detail-pane">
           <div className="map-stack">
             <ExploreMap
-              cards={canShowCards ? cards : []}
+              cards={canShowCards ? filteredCards : []}
               pending={pending}
               selectedId={selectedId}
               hoverId={hoverId}
@@ -246,7 +314,9 @@ export function Explore() {
                 <div className="sheet-actions">
                   <a
                     className="cta inline"
-                    href={`geo:${selectedCard.venue.lat},${selectedCard.venue.lng}`}
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${selectedCard.venue.lat},${selectedCard.venue.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     {t("directions")}
                   </a>

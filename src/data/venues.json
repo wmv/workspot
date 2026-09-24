@@ -5,13 +5,19 @@
     "category": "cafe",
     "lat": -8.80858,
     "lng": 13.22437,
-    "hours": [],
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5, 6, 0],
+        "open": "08:00",
+        "close": "22:00"
+      }
+    ],
     "facts": {
-      "plugs": "unknown",
-      "wifi": "unknown",
-      "parking": "unknown",
-      "groups": "unknown",
-      "calls": "unknown"
+      "plugs": "limited",
+      "wifi": "ok",
+      "parking": "easy",
+      "groups": "welcome",
+      "calls": "headphones"
     },
     "pulses": [],
     "tips": [
@@ -31,13 +37,19 @@
     "category": "other",
     "lat": -8.8158,
     "lng": 13.2395,
-    "hours": [],
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5, 6],
+        "open": "08:00",
+        "close": "23:00"
+      }
+    ],
     "facts": {
-      "plugs": "unknown",
+      "plugs": "limited",
       "wifi": "unknown",
-      "parking": "unknown",
-      "groups": "unknown",
-      "calls": "unknown"
+      "parking": "limited",
+      "groups": "welcome",
+      "calls": "headphones"
     },
     "pulses": [],
     "tips": [
@@ -57,13 +69,24 @@
     "category": "cafe",
     "lat": -8.81617,
     "lng": 13.23491,
-    "hours": [],
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5],
+        "open": "06:30",
+        "close": "16:30"
+      },
+      {
+        "days": [6, 0],
+        "open": "08:00",
+        "close": "14:00"
+      }
+    ],
     "facts": {
-      "plugs": "unknown",
-      "wifi": "unknown",
-      "parking": "unknown",
-      "groups": "unknown",
-      "calls": "unknown"
+      "plugs": "limited",
+      "wifi": "ok",
+      "parking": "limited",
+      "groups": "tolerated",
+      "calls": "good"
     },
     "pulses": [],
     "tips": [
@@ -83,13 +106,19 @@
     "category": "cafe",
     "lat": -8.81428,
     "lng": 13.23221,
-    "hours": [],
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5],
+        "open": "08:00",
+        "close": "21:00"
+      }
+    ],
     "facts": {
-      "plugs": "unknown",
-      "wifi": "unknown",
-      "parking": "unknown",
-      "groups": "unknown",
-      "calls": "unknown"
+      "plugs": "limited",
+      "wifi": "ok",
+      "parking": "limited",
+      "groups": "tolerated",
+      "calls": "good"
     },
     "pulses": [],
     "tips": [
@@ -99,6 +128,176 @@
       },
       {
         "text": "R. Amílcar Cabral 110, Sonangol Distribuidora building (Mutamba). Advertised 08:00–21:00 daily, but reportedly sometimes closed on weekends — check before you go.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "cafe-del-mar",
+    "name": "Café Del Mar",
+    "category": "cafe",
+    "lat": -8.7834,
+    "lng": 13.2425,
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5, 6, 0],
+        "open": "08:00",
+        "close": "22:00"
+      }
+    ],
+    "facts": {
+      "plugs": "limited",
+      "wifi": "ok",
+      "parking": "easy",
+      "groups": "welcome",
+      "calls": "good"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "Na Ilha de Luanda, Av. Murtala Mohamed. Mesas arejadas com vista para o mar e tomadas em locais específicos. Ótimo para trabalhar à tarde.",
+        "locale": "pt"
+      },
+      {
+        "text": "Along the Luanda Island strip, Av. Murtala Mohamed. Airy tables with ocean view and select power outlets. Great for afternoon sessions.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "epic-sana-kimbo-lounge",
+    "name": "Kimbo Lounge — Epic Sana",
+    "category": "other",
+    "lat": -8.8143,
+    "lng": 13.2335,
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5, 6, 0],
+        "open": "07:00",
+        "close": "23:00"
+      }
+    ],
+    "facts": {
+      "plugs": "yes",
+      "wifi": "fast",
+      "parking": "easy",
+      "groups": "tolerated",
+      "calls": "good"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "Rua da Missão, Baixa de Luanda. Lobby do Hotel Epic Sana. Ambiente calmo, climatizado, tomadas abundantes e excelente para chamadas e reuniões.",
+        "locale": "pt"
+      },
+      {
+        "text": "Rua da Missão, Downtown Luanda. Epic Sana Hotel lobby. Quiet air-conditioned space with plentiful plugs and fast internet. Ideal for calls.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "avennida-talatona",
+    "name": "Espaço Avennida Cowork & Café",
+    "category": "cowork",
+    "lat": -8.9082,
+    "lng": 13.1895,
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5],
+        "open": "08:00",
+        "close": "19:00"
+      },
+      {
+        "days": [6],
+        "open": "09:00",
+        "close": "14:00"
+      }
+    ],
+    "facts": {
+      "plugs": "yes",
+      "wifi": "fast",
+      "parking": "easy",
+      "groups": "welcome",
+      "calls": "good"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "Shopping Avennida, Talatona. Estruturado para trabalho remoto e pequenas equipas, com tomadas dedicadas e estacionamento seguro.",
+        "locale": "pt"
+      },
+      {
+        "text": "Shopping Avennida, Talatona. Purpose-built for remote work and small teams, with dedicated outlets and secure mall parking.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "belas-caffe-talatona",
+    "name": "Belas Shopping — Caffè & Praça",
+    "category": "cafe",
+    "lat": -8.9189,
+    "lng": 13.1837,
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5, 6, 0],
+        "open": "09:00",
+        "close": "21:00"
+      }
+    ],
+    "facts": {
+      "plugs": "limited",
+      "wifi": "ok",
+      "parking": "easy",
+      "groups": "welcome",
+      "calls": "headphones"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "Belas Shopping, Talatona. Estacionamento espaçoso e ambiente climatizado. Recomendado no período matinal para maior tranquilidade.",
+        "locale": "pt"
+      },
+      {
+        "text": "Belas Shopping, Talatona. Spacious parking and air conditioning. Best during morning hours for a quieter working atmosphere.",
+        "locale": "en"
+      }
+    ]
+  },
+  {
+    "id": "lmc-caffe",
+    "name": "Luanda Medical Center Café",
+    "category": "cafe",
+    "lat": -8.8166,
+    "lng": 13.2343,
+    "hours": [
+      {
+        "days": [1, 2, 3, 4, 5],
+        "open": "07:30",
+        "close": "17:30"
+      },
+      {
+        "days": [6],
+        "open": "08:00",
+        "close": "13:00"
+      }
+    ],
+    "facts": {
+      "plugs": "limited",
+      "wifi": "ok",
+      "parking": "limited",
+      "groups": "solo",
+      "calls": "good"
+    },
+    "pulses": [],
+    "tips": [
+      {
+        "text": "Rua Amílcar Cabral, Ingombota. Piso térreo do LMC. Ambiente limpo, calmo e café de qualidade. Perfeito para trabalho rápido na baixa.",
+        "locale": "pt"
+      },
+      {
+        "text": "Rua Amílcar Cabral, Ingombota. Ground floor of LMC. Clean, quiet environment with quality coffee. Great for quick downtown sessions.",
         "locale": "en"
       }
     ]

@@ -13,7 +13,7 @@ export function VenueDetail() {
   const { id } = useParams();
   const { t, locale } = useI18n();
   const ctx = useOutletContext<DetailContext | null>();
-  const { getVenue } = useVenues();
+  const { getVenue, setToast } = useVenues();
   const origin = ctx?.origin ?? ORIGIN;
   const venue = id ? getVenue(id) : undefined;
 
@@ -32,7 +32,36 @@ export function VenueDetail() {
   const meters = haversineMeters(origin, venue);
   const pulse = latestPulse(venue);
   const pulseN = venue.pulses.length;
-  const geo = `geo:${venue.lat},${venue.lng}`;
+  const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${venue.lat},${venue.lng}`;
+
+  async function handleShare() {
+    if (!venue) return;
+    const url = window.location.href;
+    const shareText = t("shareMessage", { name: venue.name, url });
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: venue.name,
+          text: shareText,
+          url,
+        });
+        return;
+      } catch (err) {
+        if ((err as Error).name === "AbortError") return;
+      }
+    }
+
+    const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+    window.open(waUrl, "_blank", "noopener,noreferrer");
+
+    if (navigator.clipboard) {
+      void navigator.clipboard.writeText(url).then(() => {
+        setToast(t("shareCopied"));
+      });
+    }
+  }
+
   const liveLine = pulse
     ? [
         t(`val.pulse.noise.${pulse.noise}`),
@@ -145,9 +174,53 @@ export function VenueDetail() {
       </div>
 
       <div className="detail-bar">
-        <a className="cta inline" href={geo}>
+        <a
+          className="cta inline"
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polygon points="3 11 22 2 13 21 11 13 3 11" />
+          </svg>
           {t("directions")}
         </a>
+        <button
+          type="button"
+          className="ghost detail-secondary detail-share-btn"
+          onClick={handleShare}
+          title={t("share")}
+          aria-label={t("share")}
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+          </svg>
+          {t("share")}
+        </button>
         <Link className="ghost detail-secondary" to={`/v/${venue.id}/pulse`}>
           {t("imHere")}
         </Link>
