@@ -31,6 +31,24 @@ jobs:
         run: npm ci
       - if: steps.token.outputs.present == 'true'
         run: npm run build
+
+      # Venue data ships in src/data/venues.json, but production reads Neon.
+      # Migrate and seed before deploying so merged venues actually go live.
+      # DATABASE_URL must be the direct (unpooled) Neon connection string.
+      - name: Check for database credentials
+        id: db
+        if: steps.token.outputs.present == 'true'
+        run: echo "present=${{ secrets.DATABASE_URL != '' }}" >> "$GITHUB_OUTPUT"
+      - if: steps.token.outputs.present == 'true' && steps.db.outputs.present != 'true'
+        run: echo "::warning::DATABASE_URL is not set; venues.json changes will not reach production."
+      - name: Migrate and seed database
+        if: steps.db.outputs.present == 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          npx tsx tools/migrate.ts
+          npx tsx tools/seed.ts
+
       - name: Deploy Worker
         if: steps.token.outputs.present == 'true'
         env:

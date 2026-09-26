@@ -96,15 +96,24 @@ for (const venue of list) {
   }
 }
 
-// The seed file is authoritative: venues removed from it disappear from the
-// database too (cascades take their amenities, tips, pulses, and signals).
-const stale = await client.query(
-  "DELETE FROM venues WHERE NOT (id = ANY($1::text[])) RETURNING id",
+// Venues approved from suggestions live only in the database, so anything
+// missing from the seed file is reported, not deleted. Pass --prune to delete
+// them (cascades take their amenities, tips, pulses, and signals).
+const prune = process.argv.includes("--prune");
+const extra = await client.query(
+  prune
+    ? "DELETE FROM venues WHERE NOT (id = ANY($1::text[])) RETURNING id"
+    : "SELECT id FROM venues WHERE NOT (id = ANY($1::text[]))",
   [list.map((v) => v.id)],
 );
 
 await client.end();
+const extraIds = extra.rows.map((r: { id: string }) => r.id).join(", ");
 console.log(
   `seeded ${list.length} venues` +
-    (stale.rowCount ? `, removed ${stale.rowCount} stale` : ""),
+    (extra.rowCount
+      ? prune
+        ? `, removed ${extra.rowCount} not in seed: ${extraIds}`
+        : `, kept ${extra.rowCount} not in seed: ${extraIds}`
+      : ""),
 );

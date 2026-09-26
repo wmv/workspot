@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { ORIGIN } from "../../src/lib/geo.ts";
-import { NEIGHBORHOOD_M } from "../../src/lib/location.ts";
+import { CITY_M } from "../../src/lib/location.ts";
 import type { ChipId, Facts, HourBlock, Pulse, Tip, Venue } from "../../src/lib/types.ts";
 import { DEFAULT_CHIPS } from "../../src/lib/types.ts";
 import { rankVenues } from "../../src/lib/venues.ts";
@@ -95,7 +95,7 @@ export async function loadVenues(
 ): Promise<Venue[]> {
   const lat = opts.lat ?? ORIGIN.lat;
   const lng = opts.lng ?? ORIGIN.lng;
-  const radius = opts.radiusM ?? NEIGHBORHOOD_M;
+  const radius = opts.radiusM ?? CITY_M;
 
   const bboxClause = opts.bbox
     ? sql`AND ST_Intersects(
