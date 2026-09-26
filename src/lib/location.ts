@@ -3,6 +3,8 @@ import { haversineMeters, ORIGIN } from "./geo";
 import type { Venue } from "./types";
 
 export const NEIGHBORHOOD_M = 12_000;
+/** Greater Luanda, from the centre out to Talatona and Belas. */
+export const CITY_M = 40_000;
 
 export type GeoStatus = "pending" | "granted" | "denied" | "unavailable";
 

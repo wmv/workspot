@@ -66,6 +66,13 @@ project in a git-ignored `.neon` file and pulls the branch's connection
 strings into `.env`. Schema changes run against the direct (unpooled) URL
 via `npm run db:migrate`.
 
+Venue data ships in `src/data/venues.json`, but production reads Neon, so
+every deploy to `main` also runs the migrations and the seed when the
+`DATABASE_URL` repo secret (the direct Neon URL) is set. Without it, merged
+venues never reach the live app. The seed upserts the venues in the file and
+leaves venues approved from suggestions alone; `npm run db:seed -- --prune`
+deletes everything not in the file.
+
 ## How new places get on the map
 
 Signed-in users can propose a venue from the app ("Sugerir um sítio": name,
